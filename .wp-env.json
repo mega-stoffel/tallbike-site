@@ -1,0 +1,8 @@
+{
+    "plugins": [ "WordPress/wp-lazy-loading", "WordPress/classic-editor"],
+    "mappings": {
+        "wp-content/plugins": "./plugins",
+        "wp-content/themes": "./themes"
+    },
+    "themes": [ "WordPress/theme-experiments" ]
+}
