@@ -1,0 +1,7 @@
+wp-env run cli db check
+wp-env run cli query < some.sql
+(see here: https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/)
+
+Recht gute Seite, um den Einstieg zu bekommen:
+https://wpmudev.com/blog/creating-database-tables-for-plugins/
+https://wpmudev.com/blog/activate-deactivate-uninstall-hooks/
