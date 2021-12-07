@@ -1,16 +1,14 @@
 <?php
 
-//print "Some Output";
-
 global $wpdb;
 
-$table_name = $wpdb->prefix . 'Events';
+$table_name = $wpdb->prefix . 'Badges';
 
 // this will get the data from your table
 $retrieve_data = $wpdb->get_results( "SELECT * FROM $table_name" );
 
 $outputheader = '<div class="wrap">
-    <h2>Unsere Touren</h2>
+    <h2>Orden</h2>
     <table>
         <tr>
             <th>ID</th>

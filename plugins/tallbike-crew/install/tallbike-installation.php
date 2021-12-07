@@ -9,37 +9,61 @@ function tallbike_install () {
  
     $tablebikes_name = $wpdb->prefix . "Bikes"; 
     $tableevents_name = $wpdb->prefix . "Events"; 
+    $tablebadges_name = $wpdb->prefix . "Badges"; 
+    $tablelinkBUE_name = $wpdb->prefix . "Link_Bike_User_Event"; 
     global $wpdb;
 
     $charset_collate = $wpdb->get_charset_collate();
 
-    $sql1 = "CREATE TABLE $tablebikes_name (
-    id mediumint(9) NOT NULL AUTO_INCREMENT,
-    name tinytext NOT NULL,
-    PRIMARY KEY  (id)
+    $sql_bikes = "CREATE TABLE $tablebikes_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        name tinytext NOT NULL,
+        PRIMARY KEY  (id)
     ) $charset_collate;";
 
-    $sql2 = "CREATE TABLE $tableevents_name (
+    $sql_events = "CREATE TABLE $tableevents_name (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
         time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
         name tinytext NOT NULL,
         text text NOT NULL,
         PRIMARY KEY  (id)
-        ) $charset_collate;";
+    ) $charset_collate;";
     
+    $sql_badges = "CREATE TABLE $tablebadges_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+        name tinytext NOT NULL,
+        text text NOT NULL,
+        picture varchar(128),
+        PRIMARY KEY  (id)
+    ) $charset_collate;";
+
+    $sql_link_bike_user_event = "CREATE TABLE $tablelinkBUE_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        bikeid mediumint(9) NOT NULL,
+        userid mediumint(9) NOT NULL,
+        eventid mediumint(9) NOT NULL,
+        points real,
+        text text NOT NULL,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";
+
+
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-    dbDelta( $sql1 );
-    dbDelta( $sql2 );
+    dbDelta( $sql_bikes );
+    dbDelta( $sql_events );
+    dbDelta( $sql_badges );
+    dbDelta( $sql_link_bike_user_event );
+
  }
  
- 
+ // ******************************
+ // Entering some example data
+// ******************************
 
  function tallbike_install_data() {
 
     global $wpdb;
-	
-	$welcome_name = 'Mr. WordPres';
-	$welcome_text = 'Congratulations, you just completed the installation!';
 	
 	$table_name = $wpdb->prefix . 'Bikes';
 	
@@ -57,6 +81,20 @@ function tallbike_install () {
 		) 
 	);
 
+    $wpdb->insert( 
+		$table_name, 
+		array( 
+			'name' => "Edel-Traut",
+		) 
+	);
+
+    $wpdb->insert( 
+		$table_name, 
+		array( 
+			'name' => "Sally",
+		) 
+	);
+
     $table_name = $wpdb->prefix . 'Events';
 	
 	$wpdb->insert( 
@@ -67,6 +105,40 @@ function tallbike_install () {
             'text' => "eine Tour",
 		) 
 	);
+	$wpdb->insert( 
+		$table_name, 
+		array( 
+			'name' => "Nikolaus-Ride",
+            'time' => "2021-12-06",
+            'text' => "Mit drei beleuchteten Tallbikes, Bademantel und Kasperlemütze in der Stadt unterwegs gewesen!",
+		) 
+	);
+
+    $table_name = $wpdb->prefix . 'Badges';
+
+    $wpdb->insert( 
+		$table_name, 
+		array( 
+			'name' => "Chorleiter 1",
+            'time' => "2021-12-05 16:00",
+            'text' => "So laut gesungen, dass alle mitgemacht haben!",
+            'picture' => "",
+		) 
+	);
+
+    $table_name = $wpdb->prefix . 'Link_Bike_User_Event';
+
+    $wpdb->insert( 
+		$table_name, 
+		array( 
+			'userid' => 1,
+            'bikeid' => 1,
+            'eventid' => 1,
+            'text' => "irgendwas",
+            'points' => 100
+		) 
+	);
+
 }
 
  ?>

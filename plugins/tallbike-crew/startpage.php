@@ -8,12 +8,12 @@ Author:       X-tof Hoyer
 Author URI:   https://tallbike-stuttgart.de
 */
 
-if ( ! current_user_can( 'activate_plugins' ) ) {
+/*if ( ! current_user_can( 'activate_plugins' ) ) {
 	return;
 }
 
 $plugin = isset( $_REQUEST['plugin'] ) ? $_REQUEST['plugin'] : '';
-check_admin_referer( "activate-plugin_{$plugin}" );
+check_admin_referer( "activate-plugin_{$plugin}" );*/
 
 register_activation_hook( __FILE__ , 'tallbike_install' );
 register_activation_hook( __FILE__ , 'tallbike_install_data' );
@@ -31,8 +31,18 @@ function add_Events_menu() {
     add_menu_page("Events", "Events","edit_posts", "events", "showEvents", "dashicons-megaphone", 3);
 }
 
+function add_Badges_menu() {
+  add_menu_page("Orden", "Orden","edit_posts", "badges", "showBadges", "dashicons-insert-after", 4);
+}
+
+function add_Links_menu() {
+  add_menu_page("BUE", "BUE","edit_posts", "together", "showLinks", "dashicons-admin-links", 4);
+}
+
 add_action ( "admin_menu", "add_Bikes_menu" );
 add_action ( "admin_menu", "add_Events_menu" );
+add_action ( "admin_menu", "add_Badges_menu" );
+add_action ( "admin_menu", "add_Links_menu" );
 
 function showBikes(){
     include "bikesshow.php";
@@ -40,6 +50,14 @@ function showBikes(){
 
 function showEvents(){
     include "eventsshow.php";
+  }
+
+function showBadges(){
+    include "badgesshow.php";
+  }
+
+  function showLinks(){
+    include "linksBUEshow.php";
   }
 
 /* here's all installation related stuff, creating new tables, etc */

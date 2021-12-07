@@ -5,3 +5,6 @@ wp-env run cli query < some.sql
 Recht gute Seite, um den Einstieg zu bekommen:
 https://wpmudev.com/blog/creating-database-tables-for-plugins/
 https://wpmudev.com/blog/activate-deactivate-uninstall-hooks/
+
+Könnte auch hilfreich sein:
+https://codex.wordpress.org/Main_Page
