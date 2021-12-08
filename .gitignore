@@ -13,6 +13,7 @@ plugins/hello.php
 plugins/akismet/
 plugins/classic-editor/
 plugins/wp-lazy-loading/
+plugins/simple-X-Plugin/
 
 # ignore specific themes
 themes/twenty*/
