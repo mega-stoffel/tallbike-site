@@ -16,13 +16,25 @@ $plugin = isset( $_REQUEST['plugin'] ) ? $_REQUEST['plugin'] : '';
 check_admin_referer( "activate-plugin_{$plugin}" );*/
 
 register_activation_hook( __FILE__ , 'tallbike_install' );
-register_activation_hook( __FILE__ , 'tallbike_install_data' );
+//register_activation_hook( __FILE__ , 'tallbike_install_data' );
+
+add_action( 'init', 'tbBikes_setup_post_type' );
+add_action( 'init', 'tbEvents_setup_post_type' );
 
 //todo: this doesn't seem to work!
 register_deactivation_hook( __FILE__ , 'tallbike_delete' );
 
+// This function adds bikes and events to the regular posts query!
+// I guess, I need to write my own widgets/pages for my custom post types....
+function wporg_add_custom_post_types($query) {
+  if ( is_home() && $query->is_main_query() ) {
+      $query->set( 'post_type', array( 'post', 'bikes', 'events' ) );
+  }
+  return $query;
+}
+add_action('pre_get_posts', 'wporg_add_custom_post_types');
 
-function add_Bikes_menu() {
+/*function add_Bikes_menu() {
 	add_menu_page("Bikes", "Bikes", "edit_posts", "bikes", "showBikes", "dashicons-car", 3);
     //add_menu_page("Custom Plugin", "Custom Plugin","manage_options", "myplugin", "displayList",plugins_url('/tallbike-crew/pictures/bikes.svg'));
 }
@@ -59,6 +71,7 @@ function showBadges(){
   function showLinks(){
     include "linksBUEshow.php";
   }
+  */
 
 /* here's all installation related stuff, creating new tables, etc */
 include "install/tallbike-installation.php"

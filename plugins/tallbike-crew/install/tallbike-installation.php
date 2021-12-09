@@ -3,7 +3,72 @@
 global $tallbike_db_version;
 $tallbike_db_version = '0.1';
 
-function tallbike_install () {
+function tallbike_install() { 
+    // Trigger our function that registers the custom post type plugin.
+    tbBikes_setup_post_type(); 
+    flush_rewrite_rules(); 
+    tbEvents_setup_post_type(); 
+    // Clear the permalinks after the post type has been registered.
+    flush_rewrite_rules(); 
+}
+
+function tbBikes_setup_post_type() {
+    $Bikes_Labels = array(
+        'name'          => 'Bikes',
+        'singular_name' => 'Bike',
+        'search_items'  => 'Bike suchen',
+        'all_items'     => 'Alle Bikes',
+        'parent_item'   => 'Parent?',
+        'parent_item_colon' => 'Parent?:',
+        'edit_item'     => 'Bikes bearbeiten',
+        'update_item'   => 'Bike aktualisieren',
+        'add_new_item'  => 'Neues Bike hinzufügen',
+        'new_item_name' => 'Neues Rad',
+        'menu_name'     => 'Bikes',
+    );
+
+    $Bikes_Options = array(
+        'labels'      => $Bikes_Labels,
+        'public'      => true,
+        'has_archive' => true,
+        'menu_position' => 5,
+        'supports' => ['title', 'editor' , 'author', 'custom-fields',],
+        'rewrite'     => array( 'slug' => 'bike' ), 
+        'delete_with_user' => false,
+    );
+    register_post_type( 'Bikes', $Bikes_Options); 
+}
+
+function tbEvents_setup_post_type() {
+    $Events_Labels = array(
+        'name'          => 'Events',
+        'singular_name' => 'Event',
+        'search_items'  => 'Events suchen',
+        'all_items'     => 'Alle Events',
+        'parent_item'   => 'Parent?',
+        'parent_item_colon' => 'Parent?:',
+        'edit_item'     => 'Events bearbeiten',
+        'update_item'   => 'Event aktualisieren',
+        'add_new_item'  => 'Neuen Event hinzufügen',
+        'new_item_name' => 'Neuer Event',
+        'menu_name'     => 'Events',
+    );
+
+    $Events_Options = array(
+        'labels'      => $Events_Labels,
+        'public'      => true,
+        'has_archive' => true,
+        'menu_position' => 5,
+        'supports' => ['title', 'editor' ,'author', 'comments', 'custom-fields',],
+        'rewrite'     => array( 'slug' => 'event' ), 
+        'delete_with_user' => false,
+    );
+
+    register_post_type( 'Events', $Events_Options); 
+} 
+
+
+function tallbike_Hardcoding_SQL () {
 
     global $wpdb;
  
