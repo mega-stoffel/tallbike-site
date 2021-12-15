@@ -33,10 +33,11 @@ function tbBikes_setup_post_type() {
         'has_archive' => true,
         'menu_position' => 5,
         'supports' => ['title', 'editor' , 'author', 'custom-fields',],
-        'rewrite'     => array( 'slug' => 'bike' ), 
+        'rewrite'     => array( 'slug' => 'bikes' ), 
         'delete_with_user' => false,
     );
     register_post_type( 'Bikes', $Bikes_Options); 
+    // Bikes will be accessible with this URL: http://localhost:8888/?post_type=bikes
 }
 
 function tbEvents_setup_post_type() {
@@ -60,7 +61,7 @@ function tbEvents_setup_post_type() {
         'has_archive' => true,
         'menu_position' => 5,
         'supports' => ['title', 'editor' ,'author', 'comments', 'custom-fields',],
-        'rewrite'     => array( 'slug' => 'event' ), 
+        'rewrite'     => array( 'slug' => 'events' ), 
         'delete_with_user' => false,
     );
 

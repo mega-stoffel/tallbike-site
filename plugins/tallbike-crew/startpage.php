@@ -24,6 +24,11 @@ add_action( 'init', 'tbEvents_setup_post_type' );
 //todo: this doesn't seem to work!
 register_deactivation_hook( __FILE__ , 'tallbike_delete' );
 
+require_once( 'post_types/bikes.php' );
+
+define('EXAMPLE_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
+require_once EXAMPLE_PLUGIN_PATH.'/install/register_custom_theme_files.php';
+
 // This function adds bikes and events to the regular posts query!
 // I guess, I need to write my own widgets/pages for my custom post types....
 function wporg_add_custom_post_types($query) {
