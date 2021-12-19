@@ -1,46 +1,16 @@
-<?php get_header(); ?>
-
-<?php while ( have_posts() ) : the_post(); ?>
-<article <?php post_class() ?> id="bikes-<?php the_ID(); ?>">
-    <div class="row column" id="bikes-header">
-        <h1 class="entry-title"><?php the_title(); ?></h1>
+<?php
+$args = array(
+    'post_type'      => 'bikes',
+    'posts_per_page' => 10,
+);
+$loop = new WP_Query($args);
+while ( $loop->have_posts() ) {
+    $loop->the_post();
+    ?>
+    <div class="entry-content">
+        <?php print "test"; the_title(); ?>
+        <?php the_content(); ?>
     </div>
-
-    <div class="main-wrap" role="main">
-        <div class="entry-content">
-            <div class="row">
-                <div class="medium-6 columns">
-                    <?php if(has_post_thumbnail( )) : ?>
-                        <a href="<?php the_post_thumbnail_url('large'); ?>">
-                                <img src="<?php the_post_thumbnail_url('large'); ?>"/>
-                        </a>
-                    <?php endif; ?>
-                </div>
-                <div class="medium-6 columns">
-                    <?php the_product_price(get_the_ID()); ?>
-                </div>
-            </div>
-
-            <div class="row columns">
-                <?php the_content(); ?>
-            </div>
-        </div>
-
-        <footer>
-            <?php
-                wp_link_pages(
-                    array(
-                        'before' => '<nav id="page-nav"><p>' . __( 'Bikes:', TRANSLATION_CONST ),
-                        'after'  => '</p></nav>',
-                    )
-                );
-            ?>
-        </footer>
-
-        <?php comments_template(); ?>
-
-    </div>
-</article>
-<?php endwhile;?>
-
-<?php get_footer();
+    <?php
+}
+?>

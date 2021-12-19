@@ -4,7 +4,7 @@
  *
  * Description: Eine eigene Archivseite für meinen Post Type „bikes“
  */
-
+ 
 get_header(); ?>
 
     <div class="main-wrap" role="main">

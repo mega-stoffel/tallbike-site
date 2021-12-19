@@ -15,6 +15,10 @@ Author URI:   https://tallbike-stuttgart.de
 $plugin = isset( $_REQUEST['plugin'] ) ? $_REQUEST['plugin'] : '';
 check_admin_referer( "activate-plugin_{$plugin}" );*/
 
+//These two lines define my own theme output:
+define('TALLBIKE_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
+require_once TALLBIKE_PLUGIN_PATH.'/libs/register_custom_theme_files.php';
+
 register_activation_hook( __FILE__ , 'tallbike_install' );
 //register_activation_hook( __FILE__ , 'tallbike_install_data' );
 
@@ -25,9 +29,6 @@ add_action( 'init', 'tbEvents_setup_post_type' );
 register_deactivation_hook( __FILE__ , 'tallbike_delete' );
 
 require_once( 'post_types/bikes.php' );
-
-define('EXAMPLE_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
-require_once EXAMPLE_PLUGIN_PATH.'/install/register_custom_theme_files.php';
 
 // This function adds bikes and events to the regular posts query!
 // I guess, I need to write my own widgets/pages for my custom post types....

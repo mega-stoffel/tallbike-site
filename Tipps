@@ -1,3 +1,6 @@
+Lesson Plan for Custom Post Types!
+https://learn.wordpress.org/lesson-plan/custom-post-types/
+
 wp-env run cli db check
 wp-env run cli query < some.sql
 (see here: https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/)
