@@ -6,13 +6,16 @@ function tallbike_plugin_custom_single_theme_file_include($template) {
 
     global $wp;
     
-    if ( isset($wp->query_vars['post_type']) && $wp->query_vars['post_type'] == 'bikes' )
+    if ( isset($wp->query_vars['post_type']) ) // && $wp->query_vars['post_type'] == 'bikes' )
     {
         $requested_post_type = $wp->query_vars['post_type'];
-
-        $file = TALLBIKE_PLUGIN_PATH.'/theme_files/single-' . $requested_post_type . '.php';
-        if(file_exists($file)) {
-            $template = $file;
+        
+        if ($requested_post_type == 'bikes' || $requested_post_type == 'events')
+        {
+            $file = TALLBIKE_PLUGIN_PATH.'/theme_files/single-' . $requested_post_type . '.php';
+            if(file_exists($file)) {
+                $template = $file;
+            }
         }
         return $template;
     }

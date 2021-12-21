@@ -24,6 +24,7 @@ register_activation_hook( __FILE__ , 'tallbike_install' );
 
 add_action( 'init', 'tbBikes_setup_post_type' );
 add_action( 'init', 'tbEvents_setup_post_type' );
+add_action( 'init', 'tallbike_shortcodes_init' );
 
 //todo: this doesn't seem to work!
 register_deactivation_hook( __FILE__ , 'tallbike_delete' );
@@ -80,5 +81,7 @@ function showBadges(){
   */
 
 /* here's all installation related stuff, creating new tables, etc */
-include "install/tallbike-installation.php"
+include "install/tallbike-installation.php";
+include "libs/add_shortcodes.php";
+
 ?>

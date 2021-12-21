@@ -8,7 +8,7 @@ while ( $loop->have_posts() ) {
     $loop->the_post();
     ?>
     <div class="entry-content">
-        <?php print "test"; the_title(); ?>
+        <?php print "Bike: "; the_title(); ?>
         <?php the_content(); ?>
     </div>
     <?php

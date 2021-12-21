@@ -35,6 +35,9 @@ function tbBikes_setup_post_type() {
         'supports' => ['title', 'editor' , 'author', 'custom-fields',],
         'rewrite'     => array( 'slug' => 'bikes' ), 
         'delete_with_user' => false,
+        //these are the two important lines for the entries in the Block Editor!
+        'show_in_rest' => true,
+        'supports' => array('editor'),
     );
     register_post_type( 'Bikes', $Bikes_Options); 
     // Bikes will be accessible with this URL: http://localhost:8888/?post_type=bikes
@@ -63,6 +66,8 @@ function tbEvents_setup_post_type() {
         'supports' => ['title', 'editor' ,'author', 'comments', 'custom-fields',],
         'rewrite'     => array( 'slug' => 'events' ), 
         'delete_with_user' => false,
+        'show_in_rest' => true,
+        'supports' => array('editor'),
     );
 
     register_post_type( 'Events', $Events_Options); 
