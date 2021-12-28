@@ -37,7 +37,6 @@ function tbBikes_setup_post_type() {
         'delete_with_user' => false,
         //these are the two important lines for the entries in the Block Editor!
         'show_in_rest' => true,
-        'supports' => array('editor'),
     );
     register_post_type( 'Bikes', $Bikes_Options); 
     // Bikes will be accessible with this URL: http://localhost:8888/?post_type=bikes
@@ -67,12 +66,83 @@ function tbEvents_setup_post_type() {
         'rewrite'     => array( 'slug' => 'events' ), 
         'delete_with_user' => false,
         'show_in_rest' => true,
-        'supports' => array('editor'),
     );
 
     register_post_type( 'Events', $Events_Options); 
 } 
 
+function bikes_register_meta_boxes() {
+    add_meta_box( 'bikes_level', __( 'Details', 'hcf' ), 'bikes_details_display_callback', 'bikes' );
+}
+add_action( 'add_meta_boxes', 'bikes_register_meta_boxes' );
+
+/**
+ * Meta box display callback.
+ *
+ * @param WP_Post $post Current post object.
+ */
+function bikes_details_display_callback( $post ) {
+    include plugin_dir_path( __FILE__ ) . '../libs/bikes-form.php';
+    //include '../libs/bikes-form.php';
+    //echo "Schwierigkeit";
+}
+
+
+function events_register_meta_boxes() {
+    add_meta_box( 'events_details', __( 'Details', 'hcf' ), 'events_details_display_callback', 'events' );
+    //add_meta_box( 'events_Time', __( 'Zeit', 'hcf' ), 'events_Time_display_callback', 'events' );
+    //add_meta_box( 'events_Length', __( 'Laenge', 'hcf' ), 'events_Length_display_callback', 'events' );
+}
+add_action( 'add_meta_boxes', 'events_register_meta_boxes' );
+
+/**
+ * Meta box display callback.
+ *
+ * @param WP_Post $post Current post object.
+ */
+function events_details_display_callback( $post ) {
+    include plugin_dir_path( __FILE__ ) . '../libs/events-form.php';
+}
+
+/**
+ * Save meta box content.
+ */
+function events_save_meta_box( $post_id ) {
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+    if ( $parent_id = wp_is_post_revision( $post_id ) ) {
+        $post_id = $parent_id;
+    }
+    $fields = [
+        'events_cf_Date',
+        'events_cf_Length',
+    ];
+    foreach ( $fields as $field ) {
+        if ( array_key_exists( $field, $_POST ) ) {
+            update_post_meta( $post_id, $field, sanitize_text_field( $_POST[$field] ) );
+        }
+     }
+}
+add_action( 'save_post', 'events_save_meta_box' );
+
+
+/*function add_bikes_meta_box($meta_box_id, $meta_box_title) {
+    $plugin_prefix = 'bikes_post_type_';
+
+    $html_id_attribute = $plugin_prefix . $meta_box_id . '_meta_box';
+    $php_callback_function = $plugin_prefix . 'build_' . $meta_box_id . '_meta_box';
+    $show_me_on_post_type = 'product';
+    $box_placement = 'side';
+    $box_priority = 'low';
+<div style="clear:both; margin-top:0em; margin-bottom:1em;">
+    add_meta_box(
+        $html_id_attribute,
+        $meta_box_title,
+        $php_callback_function,
+        $show_me_on_post_type,
+        $box_placement,
+        $box_priority
+    );
+}*/
 
 function tallbike_Hardcoding_SQL () {
 
