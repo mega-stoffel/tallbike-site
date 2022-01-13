@@ -14,3 +14,6 @@ https://codex.wordpress.org/Main_Page
 
 Post-Type Dokumentation
 https://pixelwerker.de/wordpress-custom-post-type/
+
+eigene Attribute für den Custom Post Type definieren, speichern und wieder abfragen:
+https://metabox.io/how-to-create-custom-meta-boxes-custom-fields-in-wordpress/
