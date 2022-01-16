@@ -1,6 +1,6 @@
 <?php
 /**
- * Das Standard-Template zum Anzeigen eines Produktes
+ * Das Standard-Template zum Anzeigen eines Events
  */
 ?>
 
