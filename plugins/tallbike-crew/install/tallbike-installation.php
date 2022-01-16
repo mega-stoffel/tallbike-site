@@ -115,6 +115,8 @@ function events_save_meta_box( $post_id ) {
     $fields = [
         'events_cf_Date',
         'events_cf_Length',
+        'bikes_cf_Complexity',
+        'bikes_cf_Creator',
     ];
     foreach ( $fields as $field ) {
         if ( array_key_exists( $field, $_POST ) ) {

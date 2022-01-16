@@ -20,8 +20,10 @@ get_header(); ?>
 
 	<div class="entry-content">
 		<?php
-		the_content();
-
+		the_content(); ?>
+		
+		<strong>Erbauer:in:</strong> <?php echo esc_attr( get_post_meta( get_the_ID(), 'bikes_cf_Creator', true ) ); ?>
+    
 		wp_link_pages(
 			array(
 				'before'   => '<nav class="page-links" aria-label="' . esc_attr__( 'Page', 'twentytwentyone' ) . '">',
