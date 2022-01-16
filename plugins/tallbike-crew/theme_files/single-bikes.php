@@ -9,7 +9,8 @@
  * @since Twenty Twenty-One 1.0
  */
 
-get_header(); ?>
+get_header();
+?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
@@ -20,10 +21,13 @@ get_header(); ?>
 
 	<div class="entry-content">
 		<?php
-		the_content(); ?>
-		
-		<strong>Erbauer:in:</strong> <?php echo esc_attr( get_post_meta( get_the_ID(), 'bikes_cf_Creator', true ) ); ?>
-    
+		the_content();
+		$current_ID=get_the_ID();
+		?>
+		<strong>Erbauer:in: </strong> <?php echo esc_attr( get_post_meta($current_ID, 'bikes_cf_Creator', true ) ); ?>
+		<br>
+		<strong>Schwierigkeit: </strong> <?php echo esc_attr( get_post_meta($current_ID, 'bikes_cf_Complexity', true ) );
+
 		wp_link_pages(
 			array(
 				'before'   => '<nav class="page-links" aria-label="' . esc_attr__( 'Page', 'twentytwentyone' ) . '">',
