@@ -115,6 +115,7 @@ function events_save_meta_box( $post_id ) {
     $fields = [
         'events_cf_Date',
         'events_cf_Length',
+        'events_cf_Place',
         'bikes_cf_Complexity',
         'bikes_cf_Creator',
     ];

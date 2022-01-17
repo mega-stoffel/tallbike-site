@@ -16,6 +16,11 @@
         value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'events_cf_Date', true ) ); ?>" >
     </p>
     <p class="meta-options events_cf_field">
+        <label for="events_cf_Place">Treffpunkt</label>
+        <input id="events_cf_Place" type="text" name="events_cf_Place"
+        value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'events_cf_Place', true ) ); ?>" >
+    </p>
+    <p class="meta-options events_cf_field">
         <label for="events_cf_Length">L&auml;nge (km)</label>
         <input id="events_cf_Length" type="number" name="events_cf_Length" 
         value="<?php echo esc_attr( get_post_meta( get_the_ID(), 'events_cf_Length', true ) ); ?>" >

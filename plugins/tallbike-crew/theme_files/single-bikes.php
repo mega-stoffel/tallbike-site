@@ -28,6 +28,11 @@ get_header();
 		<br>
 		<strong>Schwierigkeit: </strong> <?php echo esc_attr( get_post_meta($current_ID, 'bikes_cf_Complexity', true ) );
 
+		// -------------------------------------
+		// Missing: The list of all events, this bike was part of:
+
+		// -------------------------------------
+		
 		wp_link_pages(
 			array(
 				'before'   => '<nav class="page-links" aria-label="' . esc_attr__( 'Page', 'twentytwentyone' ) . '">',
