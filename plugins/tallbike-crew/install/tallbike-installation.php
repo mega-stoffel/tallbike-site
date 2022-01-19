@@ -5,11 +5,11 @@ $tallbike_db_version = '0.1';
 
 function tallbike_install() { 
     // Trigger our function that registers the custom post type plugin.
-    tbBikes_setup_post_type(); 
-    flush_rewrite_rules(); 
     tbEvents_setup_post_type(); 
+    tbBikes_setup_post_type(); 
     // Clear the permalinks after the post type has been registered.
-    flush_rewrite_rules(); 
+    //flush_rewrite_rules(); 
+    flush_rewrite_rules(false); 
 }
 
 function tbBikes_setup_post_type() {
@@ -31,11 +31,11 @@ function tbBikes_setup_post_type() {
         'labels'      => $Bikes_Labels,
         'public'      => true,
         'has_archive' => true,
-        'menu_position' => 5,
-        'supports' => ['title', 'editor' , 'author', 'custom-fields',],
+        'menu_position' => 6,
+        'supports' => ['title', 'editor' , 'author', 'custom-fields','thumbnail','page-attributes','post-formats,'],
         'rewrite'     => array( 'slug' => 'bikes' ), 
         'delete_with_user' => false,
-        //these are the two important lines for the entries in the Block Editor!
+        //this is the important line for the entries in the Block Editor!
         'show_in_rest' => true,
     );
     register_post_type( 'Bikes', $Bikes_Options); 
@@ -62,7 +62,7 @@ function tbEvents_setup_post_type() {
         'public'      => true,
         'has_archive' => true,
         'menu_position' => 5,
-        'supports' => ['title', 'editor' ,'author', 'comments', 'custom-fields',],
+        'supports' => ['title', 'editor' ,'author', 'comments', 'custom-fields','thumbnail','page-attributes','post-formats,'],
         'rewrite'     => array( 'slug' => 'events' ), 
         'delete_with_user' => false,
         'show_in_rest' => true,

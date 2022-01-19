@@ -19,10 +19,10 @@
         <div class="entry-content">
             <?php
                 //the_product_price(get_the_ID());
-                echo '<br />';
+                //echo '<br />';
                 the_excerpt();
-                echo '<br />';
-                the_post();
+                //echo '<br />';
+                //the_post();
             ?>
         </div>
     </div>
