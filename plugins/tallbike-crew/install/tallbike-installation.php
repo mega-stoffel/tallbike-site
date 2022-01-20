@@ -1,14 +1,18 @@
 <?php
 
 global $tallbike_db_version;
-$tallbike_db_version = '0.1';
+$tallbike_db_version = '0.2';
 
 function tallbike_install() { 
-    // Trigger our function that registers the custom post type plugin.
-    tbEvents_setup_post_type(); 
+    // adding the 
     tbBikes_setup_post_type(); 
+    tbEvents_setup_post_type(); 
+
+    // adding the dedicated SQL commands:
+    tbSQL_setup(); 
+
     // Clear the permalinks after the post type has been registered.
-    //flush_rewrite_rules(); 
+    // flush_rewrite_rules(); (used to be here, tried it with the events-archive-issue)
     flush_rewrite_rules(false); 
 }
 
@@ -147,40 +151,15 @@ add_action( 'save_post', 'events_save_meta_box' );
     );
 }*/
 
-function tallbike_Hardcoding_SQL () {
+//function tallbike_Hardcoding_SQL () {
+function tbSQL_setup () {
 
     global $wpdb;
  
-    $tablebikes_name = $wpdb->prefix . "Bikes"; 
-    $tableevents_name = $wpdb->prefix . "Events"; 
-    $tablebadges_name = $wpdb->prefix . "Badges"; 
     $tablelinkBUE_name = $wpdb->prefix . "Link_Bike_User_Event"; 
-    global $wpdb;
+    //global $wpdb;
 
     $charset_collate = $wpdb->get_charset_collate();
-
-    $sql_bikes = "CREATE TABLE $tablebikes_name (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        name tinytext NOT NULL,
-        PRIMARY KEY  (id)
-    ) $charset_collate;";
-
-    $sql_events = "CREATE TABLE $tableevents_name (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-        name tinytext NOT NULL,
-        text text NOT NULL,
-        PRIMARY KEY  (id)
-    ) $charset_collate;";
-    
-    $sql_badges = "CREATE TABLE $tablebadges_name (
-        id mediumint(9) NOT NULL AUTO_INCREMENT,
-        time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
-        name tinytext NOT NULL,
-        text text NOT NULL,
-        picture varchar(128),
-        PRIMARY KEY  (id)
-    ) $charset_collate;";
 
     $sql_link_bike_user_event = "CREATE TABLE $tablelinkBUE_name (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
@@ -192,12 +171,39 @@ function tallbike_Hardcoding_SQL () {
         PRIMARY KEY  (id)
     ) $charset_collate;";
 
-
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-    dbDelta( $sql_bikes );
-    dbDelta( $sql_events );
-    dbDelta( $sql_badges );
     dbDelta( $sql_link_bike_user_event );
+
+    //$tablebikes_name = $wpdb->prefix . "Bikes"; 
+    //$tableevents_name = $wpdb->prefix . "Events"; 
+    //$tablebadges_name = $wpdb->prefix . "Badges"; 
+
+    /*$sql_bikes = "CREATE TABLE $tablebikes_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        name tinytext NOT NULL,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";*/
+
+    /*$sql_events = "CREATE TABLE $tableevents_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+        name tinytext NOT NULL,
+        text text NOT NULL,
+        PRIMARY KEY  (id)
+    ) $charset_collate;";*/
+    
+    /*$sql_badges = "CREATE TABLE $tablebadges_name (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+        name tinytext NOT NULL,
+        text text NOT NULL,
+        picture varchar(128),
+        PRIMARY KEY  (id)
+    ) $charset_collate;";*/
+
+    //dbDelta( $sql_bikes );
+    //dbDelta( $sql_events );
+    //dbDelta( $sql_badges );
 
  }
  
