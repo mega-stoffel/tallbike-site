@@ -88,34 +88,19 @@ include "libs/add_shortcodes.php";
 // Some working AJAX !
 // -----------------------------------------------------
 add_action("wp_ajax_tb_addme_tour", "tb_addme_tour");
-//add_action("wp_ajax_nopriv_my_user_vote", "my_must_login");
+add_action("wp_ajax_nopriv_my_user_vote", "my_must_login");
 
 function tb_addme_tour() {
 
-   global $wpdb;
-
    if ( !wp_verify_nonce( $_REQUEST['nonce'], "tb_addme_tour_nonce")) {
-      exit("So wird das nix!");
+      exit("No naughty business please");
    }   
-   $current_eventID = $_REQUEST["post_id"];
-   $current_userID = $_REQUEST["tbuser"];
-   //$vote_count = get_post_meta($_REQUEST["post_id"], "events_cf_Length", true);
-   //$vote_count = ($vote_count == ’) ? 0 : $vote_count;
-   //$new_vote_count = $vote_count + 1;
 
-   //$addme = update_post_meta($_REQUEST["post_id"], "events_cf_Length", $new_vote_count);
+   $vote_count = get_post_meta($_REQUEST["post_id"], "events_cf_Length", true);
+   $vote_count = ($vote_count == ’) ? 0 : $vote_count;
+   $new_vote_count = $vote_count + 1;
 
-   $rows_affected = $wpdb->insert
-   (
-      'wp_Link_Bike_User_Event',
-      array(
-          'userid' => $current_userID,
-          'eventid' => $current_eventID,
-          'text' => '',
-          'points' => 10.4
-      ),
-      array('%d','%d','%s','%f') 
-  );
+   $vote = update_post_meta($_REQUEST["post_id"], "events_cf_Length", $new_vote_count);
 
    if($vote === false) {
       $result['type'] = "error";

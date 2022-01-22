@@ -44,6 +44,7 @@
         the_content();
 
 		?>
+
         
         <p> <strong>L&auml;nge: </strong> <?php echo esc_attr( get_post_meta($current_eventID, 'events_cf_Length', true ) ); ?>km<br>
         <strong>Treffpunkt: </strong> <?php echo esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) ); ?></p>
@@ -52,93 +53,66 @@
 		// -------------------------------------
 		// Missing: The list of all people, who attended, this event:
         global $wpdb;
-        $current_tbuser = get_current_user_id();
         $tablelinkBUE_name = $wpdb->prefix . "Link_Bike_User_Event";
 
         //get all entries for this particular event:
-        $BUE_results = $wpdb->get_results("SELECT * FROM " . $tablelinkBUE_name . " WHERE eventid = ". esc_sql($current_eventID) ." ORDER BY RAND()"); 
-        $BUE_counter = count($BUE_results);
-        $userAlreadyExistshere = false;
-
-        // $all_meta_for_user = get_user_meta(1);
-        // print_r( $all_meta_for_user ) . "<br>";
-
-        echo "<table>\n";
-        for($i=-1;$i<$BUE_counter;$i++)
+        $BUE_results = $wpdb->get_results("SELECT * FROM " . $tablelinkBUE_name . " WHERE eventid = ". esc_sql($current_eventID)); 
+        
+        foreach ( $BUE_results as $BUE_result)
         {
-            if ($i<0)
-            {
-                echo "<tr>"; //<th>Event</th>
-                echo "<th>Person</th><th>Bike</th><th>Punkte</th></tr>\n";
-            }
-            else
-            {
-                echo "<tr>";
-                //echo "<td>" . $BUE_results[$i]->eventid . "</td>";
-                $tbuser_id = $BUE_results[$i]->userid;
-                if ($current_tbuser == $tbuser_id)
-                {
-                    $userAlreadyExistshere = true;
-                }
-                $tbfirstname = get_user_meta($tbuser_id, 'first_name', true);
-                if ($tbfirstname == '')
-                    $tbfirstname = get_user_meta($tbuser_id, 'nickname', true);
-                echo "<td>" . $tbfirstname . "</td>";
-                $tbbikename = get_metadata('posts', 40, 'title'); 
-                foreach ($tbbikename as $tbbikename1)
-                    { echo $tbbikename1;}
-                echo "<td>" . get_the_title($BUE_results[$i]->bikeid) . "</td>";
-                echo "<td>" . $BUE_results[$i]->points . "</td></tr>\n";   
-            }
-        }
-        echo "</table>\n";
+		    echo "eventID: " . $BUE_result->eventID . "<br>";
+            echo "bikeID: " . $BUE_result->bikeID . "<br>";
+            echo "userID: " . $BUE_result->userID . "<br>";
+            echo "points: " . $BUE_result->points . "<br>";
+	    };
+
+        /*
+        Users: 1, 2
+        Events: 6,38,41
+        Bikes: 25,40
+        */ 
         
-        // Missing: Add yourself (or anyone else, if "Admin" or "Editor") to this list:
+        // Missing: Add yourself (or anyone else, if Admin or Editor) to this list:
+        $current_tbuser = get_current_user_id();
         echo "<p>";
-        
         //Alternative: if (get_current_user_id() > 0)
+
         if( is_user_logged_in() )
         {
             $tbuser = wp_get_current_user(); // getting & setting the current user 
-	        $tbadmin = false;
-            $tbroles = ( array ) $tbuser->roles;
+	        $tbroles = ( array ) $tbuser->roles;
             foreach ($tbroles as $tbrole)
             {
                 if ($tbrole == "administrator" || $tbrole == "editor")
                 {
                     $tbadmin = true;
-                    break;
                 }
-                //if tbadmin: show list of users
-                //echo $tbrole . " for my user. And tbadmin: " . var_dump($tbadmin) . "<br>";
+                else
+                {
+                    $tbadmin = false;
+                }
+                echo $tbrole . " for my user. And tbadmin: " . var_dump($tbadmin) . "<br>";
             }
-            
-            // Eintragen-Link nicht anzeigen, wenn schon bei der Tour dabei:
-            if ($userAlreadyExistshere != true)
-            {
-                $nonce = wp_create_nonce("tb_addme_tour_nonce");
-                $link = admin_url('admin-ajax.php?action=tb_addme_tour&post_id='.$post->ID.'&tbuser='.$current_tbuser.'&nonce='.$nonce);
-                echo '<br><a class="user_vote" data-nonce="' . $nonce . '" data-post_id="' . $post->ID . '" tbuser="' . $current_tbuser.'"';
-                echo ' href="' . $link . '">Ich war dabei!</a></p>';
-            }
+            echo "yes, logged in: " . $current_tbuser;
             ?>
 
-<?php
-//$votes = get_post_meta($post->ID, "events_cf_Length", true);
-//$votes = ($votes == "") ? 0 : $votes;
-//echo <p class="vote_counter">echo $votes; my votes;
-?>
-<?php
-//$nonce = wp_create_nonce("tb_addme_tour_nonce");
-//$link = admin_url('admin-ajax.php?action=tb_addme_tour&post_id='.$post->ID.'&nonce='.$nonce);
-//echo '<br><a class="user_vote" data-nonce="' . $nonce . '" data-post_id="' . $post->ID . '" href="' . $link . '">Ich war dabei!</a></p>';
-?>
+            <div class="control-group">
+                <input type="text" required="required" name="title" class="pref2" placeholder="Input Title">
+                <button class="pref2" id="next">Next</button>
+            </div>
 
-<!--<p>This post has <div id='vote_counter'><?php //echo $votes ?></div> votes</p>-->
 <?php
-//$nonce = wp_create_nonce("tb_addme_tour_nonce");
-//$link = admin_url('admin-ajax.php?action=tb_addme_tour&post_id='.$post->ID.'&nonce='.$nonce);
-//echo '<a class="user_vote" data-nonce="' . $nonce . '" data-post_id="' . $post->ID . '" href="' . $link . '">vote for this article</a>';
+$votes = get_post_meta($post->ID, "events_cf_Length", true);
+$votes = ($votes == "") ? 0 : $votes;
+?>
+<p class="vote_counter"></p>
+<p>This post has <div id='vote_counter'><?php echo $votes ?></div> votes</p>
+
+<?php
+$nonce = wp_create_nonce("tb_addme_tour_nonce");
+$link = admin_url('admin-ajax.php?action=tb_addme_tour&post_id='.$post->ID.'&nonce='.$nonce);
+echo '<a class="user_vote" data-nonce="' . $nonce . '" data-post_id="' . $post->ID . '" href="' . $link . '">vote for this article</a>';
+
 ?>
             
             <!-- <form action="" id="postvalues" method="post">

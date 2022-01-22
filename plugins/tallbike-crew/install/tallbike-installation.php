@@ -167,8 +167,8 @@ function tbSQL_setup () {
         userid mediumint(9) NOT NULL,
         eventid mediumint(9) NOT NULL,
         points real,
-        text text NOT NULL,
-        PRIMARY KEY  (id)
+        --text text NULL,
+        PRIMARY KEY (id)
     ) $charset_collate;";
 
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );

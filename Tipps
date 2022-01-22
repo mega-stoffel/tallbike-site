@@ -2,7 +2,7 @@ Lesson Plan for Custom Post Types!
 https://learn.wordpress.org/lesson-plan/custom-post-types/
 
 wp-env run cli db check
-wp-env run cli query < some.sql
+wp-env run cli db query < selectPosts.sql
 (see here: https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/)
 
 Recht gute Seite, um den Einstieg zu bekommen:
@@ -31,3 +31,22 @@ https://www.smashingmagazine.com/2011/10/how-to-use-ajax-in-wordpress/
     https://www.jackreichert.com/2013/03/using-ajax-in-wordpress-development-the-quickstart-guide/
     very basic:
     https://odd.blog/2008/11/01/make-your-wordpress-plugin-talk-ajax/
+
+
+    Users: 1, 2
+    Events: 6,38,41
+    Bikes: 25,40
+
+wordpress.wp_Link_Bike_User_Event                  OK
+wordpress.wp_commentmeta                           OK
+wordpress.wp_comments                              OK
+wordpress.wp_links                                 OK
+wordpress.wp_options                               OK
+wordpress.wp_postmeta                              OK
+wordpress.wp_posts                                 OK
+wordpress.wp_term_relationships                    OK
+wordpress.wp_term_taxonomy                         OK
+wordpress.wp_termmeta                              OK
+wordpress.wp_terms                                 OK
+wordpress.wp_usermeta                              OK
+wordpress.wp_users                                 OK
