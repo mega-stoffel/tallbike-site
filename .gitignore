@@ -19,6 +19,7 @@ plugins/what-the-file/
 
 # ignore specific themes
 themes/twenty*/
+themes/theme-*/
 
 # ignore node dependency directories
 node_modules/
