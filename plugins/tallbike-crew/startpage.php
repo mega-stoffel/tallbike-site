@@ -99,9 +99,6 @@ function tb_addme_tour() {
    }   
    $current_eventID = $_REQUEST["post_id"];
    $current_userID = $_REQUEST["tbuser"];
-   //$vote_count = get_post_meta($_REQUEST["post_id"], "events_cf_Length", true);
-   //$vote_count = ($vote_count == ’) ? 0 : $vote_count;
-   //$new_vote_count = $vote_count + 1;
 
    //$addme = update_post_meta($_REQUEST["post_id"], "events_cf_Length", $new_vote_count);
 
@@ -112,7 +109,7 @@ function tb_addme_tour() {
           'userid' => $current_userID,
           'eventid' => $current_eventID,
           'text' => '',
-          'points' => 10.4
+          'points' => 1,
       ),
       array('%d','%d','%s','%f') 
   );

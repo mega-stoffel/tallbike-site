@@ -110,7 +110,7 @@ $votes = ($votes == "") ? 0 : $votes;
 
 <?php
 $nonce = wp_create_nonce("tb_addme_tour_nonce");
-$link = admin_url('admin-ajax.php?action=tb_addme_tour&post_id='.$post->ID.'&nonce='.$nonce);
+$link = admin_url('admin-ajax.php?action=tb_addme_tour&post_id='.$post->ID.'&nonce='.$nonce."4");
 echo '<a class="user_vote" data-nonce="' . $nonce . '" data-post_id="' . $post->ID . '" href="' . $link . '">vote for this article</a>';
 
 ?>

@@ -121,33 +121,6 @@
                 echo '<br><a class="user_vote" data-nonce="' . $nonce . '" data-post_id="' . $post->ID . '" tbuser="' . $current_tbuser.'"';
                 echo ' href="' . $link . '">Ich war dabei!</a></p>';
             }
-            ?>
-
-<?php
-//$votes = get_post_meta($post->ID, "events_cf_Length", true);
-//$votes = ($votes == "") ? 0 : $votes;
-//echo <p class="vote_counter">echo $votes; my votes;
-?>
-<?php
-//$nonce = wp_create_nonce("tb_addme_tour_nonce");
-//$link = admin_url('admin-ajax.php?action=tb_addme_tour&post_id='.$post->ID.'&nonce='.$nonce);
-//echo '<br><a class="user_vote" data-nonce="' . $nonce . '" data-post_id="' . $post->ID . '" href="' . $link . '">Ich war dabei!</a></p>';
-?>
-
-<!--<p>This post has <div id='vote_counter'><?php //echo $votes ?></div> votes</p>-->
-<?php
-//$nonce = wp_create_nonce("tb_addme_tour_nonce");
-//$link = admin_url('admin-ajax.php?action=tb_addme_tour&post_id='.$post->ID.'&nonce='.$nonce);
-//echo '<a class="user_vote" data-nonce="' . $nonce . '" data-post_id="' . $post->ID . '" href="' . $link . '">vote for this article</a>';
-?>
-            
-            <!-- <form action="" id="postvalues" method="post">
-            <input type="text" name="organizationname" id="organizationname" value="">
-            <input type="text" name="organizationname" id="organizationname" value="">
-            <input type="text" name="organizationname" id="organizationname" value="">
-            <input type="text" name="organizationname" id="organizationname" value="">
-            </form> -->
-            <?php
         }
         else {
             echo "Falls Du dabei warst, meld dich doch an und trage dich in die Liste ein!";
@@ -157,6 +130,39 @@
 
         //some browsing to the previous and next tours:
         echo "<p>";
+        //$meta_sql = get_meta_sql( $meta_query, 'post', $wpdb->posts, 'ID');
+
+        /*add_filter( 'posts_where' , 'posts_where' );
+ 
+        function posts_where( $where ) {
+ 
+        if( is_admin() ) {
+            global $wpdb;
+            $where .= " AND events_cf_Date < > GETDATE() ORDER BY events_cf_Date desc;";
+            }
+        return $where;
+        }*/
+
+        /*$tb_order_by = "ORDER BY p.events_cf_date";
+        //$tb_post = "wp_posts";
+        $tb_order = "ASC";
+        $adjacent = "next";
+        apply_filters( "get_{$adjacent}_post_sort", $tb_order_by, $post, $tb_order );*/
+
+        $meta_query = array(
+            array(
+                'key' => 'events_cf_date',
+                'value' => date("Y-m-d"),
+                'compare' => '>='
+            )
+        );
+        global $wpdb;
+        $meta_sql = get_meta_sql( $meta_query, 'post', $wpdb->posts, 'ID' );
+
+        /*$tb_where = "events_cf_Date < > GETDATE() ORDER BY events_cf_Date desc;"
+        apply_filters( "get_next_post_where", string $tb_where )*/
+        
+
         $previousLink = get_previous_post_link();
         //Todo: only show next link, if it's not in the future.
         $nextLink = get_next_post_link();
