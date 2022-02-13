@@ -9,6 +9,8 @@
 
 get_header();
 
+wp_reset_postdata();
+
 $queryArgs = array( 
     'post_type'	=> 'bikes',
     'posts_per_page' => 10,
@@ -20,13 +22,13 @@ $queryArgs = array(
 //'meta_key'  => 'events_cf_Date',
 //'after'     => 'January 1st, 2022',
 
-$the_query = new WP_Query( $queryArgs ); 
+$tb_bikes_query = new WP_Query( $queryArgs ); 
 
-if ( $the_query->have_posts() ) {
+if ( $tb_bikes_query->have_posts() ) {
     echo '<ul>';
-    while ( $the_query->have_posts() ) {
-        $the_query->the_post();
-        echo '<li>' . get_the_title() . '</li>';
+    while ( $tb_bikes_query->have_posts() ) {
+        $tb_bikes_query->the_post();
+        echo '<li><a href="'. get_the_permalink() .'">' . get_the_title() . '</a></li>';
     }
     echo '</ul>';
 } else {
@@ -43,9 +45,9 @@ wp_reset_postdata();
 <div class="main-wrap" role="main">
         <!-- Darstellung der Bikes -->
         <section id="bikes-listing">
-            <?php if ( $the_query->have_posts() ) : ?>
+            <?php if ( $tb_bikes_query->have_posts() ) : ?>
                 <div class="row">
-                <?php while ( $the_query->have_posts() ) : $the_query->the_post(); ?>
+                <?php while ( $tb_bikes_query->have_posts() ) : $tb_bikes_query->the_post(); ?>
                     <div class="column">
             	       <?php require_once( 'bikes-content.php' ); ?>
 	                </div>

@@ -29,7 +29,9 @@ add_action( 'init', 'tallbike_shortcodes_init' );
 //todo: this doesn't seem to work!
 register_deactivation_hook( __FILE__ , 'tallbike_delete' );
 
-require_once( 'post_types/bikes.php' );
+//require_once( 'post_types/bikes.php' );
+//require_once( 'post_types/events.php' );
+
 
 // This function adds bikes and events to the regular posts query!
 // I guess, I need to write my own widgets/pages for my custom post types....

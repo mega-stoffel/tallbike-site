@@ -40,15 +40,14 @@ wp_reset_postdata();
 //'meta_key' => 'ecents_cf_Place',
 //'meta_value' => 'Marienplatz',
 ?>
-
+some output!
     <div class="main-wrap" role="main">
-
         <!-- Darstellung der Events -->
         <section id="events-listing">
             <?php if ( $the_query->have_posts() ) : ?>
                 <div class="row">
                 <?php while ( have_posts() ) : the_post(); ?>
-                    <div class="column">OUTPUT
+                    <div class="column">
 	       <?php require_once( 'events-content.php' ); ?>
 	    </div>
                 <? endwhile; ?>
