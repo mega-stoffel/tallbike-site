@@ -28,7 +28,8 @@ if ( $tb_bikes_query->have_posts() ) {
     echo '<ul>';
     while ( $tb_bikes_query->have_posts() ) {
         $tb_bikes_query->the_post();
-        echo '<li><a href="'. get_the_permalink() .'">' . get_the_title() . '</a></li>';
+        echo '<li><img src="' . get_the_post_thumbnail_url(get_the_ID() ,'medium') .'">';
+        echo ' <a href="'. get_the_permalink() .'">' . get_the_title() . '</a></li><br>';
     }
     echo '</ul>';
 } else {
@@ -41,20 +42,5 @@ wp_reset_postdata();
 
 // the next chapter kind of works as well, but outputs just one bike....
 ?>
-
-<div class="main-wrap" role="main">
-        <!-- Darstellung der Bikes -->
-        <section id="bikes-listing">
-            <?php if ( $tb_bikes_query->have_posts() ) : ?>
-                <div class="row">
-                <?php while ( $tb_bikes_query->have_posts() ) : $tb_bikes_query->the_post(); ?>
-                    <div class="column">
-            	       <?php require_once( 'bikes-content.php' ); ?>
-	                </div>
-                <? endwhile; ?>
-                </div>
-            <?php endif; ?>
-        </section>
-    </div>
 
 <?php get_footer();

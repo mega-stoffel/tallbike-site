@@ -40,3 +40,21 @@ function example_plugin_custom_archive_theme_file_include($template) {
 
 }
 add_action('archive_template', 'example_plugin_custom_archive_theme_file_include');
+
+function example_plugin_custom_archive_theme_file_include($template) {
+
+    global $wp;
+    $requested_post_type = $wp->query_vars["post_type"];
+
+    if($requested_post_type == 'events')
+        return $template;
+
+    $file = EXAMPLE_PLUGIN_PATH.'/theme_files/archive-'.$requested_post_type.'.php';
+    if(file_exists($file)) {
+        $template = $file;
+    }
+
+    return $template;
+
+}
+add_action('archive_template', 'example_plugin_custom_archive_theme_file_include');

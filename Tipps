@@ -5,6 +5,9 @@ wp-env run cli db check
 wp-env run cli db query < selectPosts.sql
 (see here: https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/)
 
+(potentielle) Aktivierung des Debug-Modus in der wp-env.json Datei:
+https://make.wordpress.org/core/2020/03/03/wp-env-simple-local-environments-for-wordpress/
+
 Recht gute Seite, um den Einstieg zu bekommen:
 https://wpmudev.com/blog/creating-database-tables-for-plugins/
 https://wpmudev.com/blog/activate-deactivate-uninstall-hooks/

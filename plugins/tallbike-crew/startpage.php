@@ -142,6 +142,27 @@ function my_must_login() {
    die();
 }
 
+// -----------------------------------
+//       S H O R T C O D E S
+// -----------------------------------
+require_once( 'libs/tb-shortcodes.php' );
+add_shortcode('tb_kommendeTouren', 'tb_future_events');
+add_shortcode('tb_vergangeneTouren', 'tb_previous_events');
+
+
+// ---------------------------------
+//       W I D G E T S 
+// ---------------------------------
+// require_once( 'libs/tb-widgets.php' );
+// Register my widget for all future Events
+// function tb_future_events_widget() {
+// 	register_widget( 'Future_Events' );
+// }
+// add_action( 'widgets_init', 'tb_future_events_widget' );
+
+
+
+
 // --------------------------------------------------------
 // Trying a different AJAX approach
 // --------------------------------------------------------

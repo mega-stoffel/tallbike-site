@@ -4,5 +4,9 @@
         "wp-content/plugins": "./plugins",
         "wp-content/themes": "./themes"
     },
-    "themes": [ "WordPress/theme-experiments" ]
+    "themes": [ "WordPress/theme-experiments" ],
+    "config": {
+	    "WP_DEBUG": true,
+	    "WP_DEBUG_DISPLAY": true
+	}
 }
