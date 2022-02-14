@@ -15,7 +15,7 @@ function tb_future_events(){
     // https://developer.wordpress.org/reference/classes/wp_query/
     $queryArgs = array( 
         'post_type'	=> 'events',
-        'posts_per_page' => 10,
+        'posts_per_page' => 3,
         //'orderby'   => 'events_cf_date',
         'order'     => 'DESC',
         'meta_key'  => 'events_cf_Date',
@@ -27,7 +27,7 @@ function tb_future_events(){
     //'meta_key'  => 'events_cf_Date',
     //'after'     => 'January 1st, 2022',
 
-    $tb_futureevents = "<p>Kommende Touren:<br>";
+    $tb_futureevents = "<br><h3>Kommende Touren</h3><br>";
 
     $tb_events_query = new WP_Query( $queryArgs ); 
 
@@ -44,9 +44,9 @@ function tb_future_events(){
             $date = new DateTime($current_eventtimestamp);
             $date->format('d.M.YY');
             //$current_eventDate = date('d.M.Y', $current_eventtimestamp);
-            $tb_futureevents .=  '<li>'. get_the_title() . '<br>';
+            $tb_futureevents .=  '<li><h4>'. get_the_title() . '</h4>';
             $tb_futureevents .=  "Wann? " . $current_eventDate . " um " . $current_eventTime ." Uhr<br>";
-            $tb_futureevents .=  "Wo? " . esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) ) . "</li></p>";
+            $tb_futureevents .=  "Wo? " . esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) ) . "</li>";
         }
         $tb_futureevents .=  '</ul>';
     } else {
@@ -68,7 +68,7 @@ $tbtoday = date('Y-m-d');
 
 $queryArgs = array( 
     'post_type'	=> 'events',
-    'posts_per_page' => 10,
+    'posts_per_page' => 6,
     //'orderby'   => 'events_cf_date',
     'order'     => 'DESC',
     'meta_key'  => 'events_cf_Date',
@@ -77,12 +77,13 @@ $queryArgs = array(
     'meta_compare'  => '<=',
 );
 
-$tb_futureevents = "<br><p>Vergangene Touren:<br>";
+$tb_previousevents = "<br><h3>Vergangene Touren</h3><br>";
 
 $tb_events_query = new WP_Query( $queryArgs ); 
 
 if ( $tb_events_query->have_posts() ) {
-    $tb_futureevents .= "<ul>";
+    $tb_previousevents .= "<ul>";
+    
     while ( $tb_events_query->have_posts() ) {
         $tb_events_query->the_post();
         $current_eventID = get_the_ID();
@@ -94,19 +95,22 @@ if ( $tb_events_query->have_posts() ) {
         $date = new DateTime($current_eventtimestamp);
         $date->format('d.M.YY');
         //$current_eventDate = date('d.M.Y', $current_eventtimestamp);
-        $tb_futureevents .=  '<li> <a href="'. get_the_permalink() .'">' . get_the_title() . '</a><br>';
-        $tb_futureevents .=  "Wann? " . $current_eventDate . " um " . $current_eventTime ." Uhr<br>";
-        $tb_futureevents .=  "Wo? " . esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) ) . "</li></p>";
+        $tb_previousevents .= "<li>";
+        $tb_previousevents .=  '<h4><a href="'. get_the_permalink() .'">' . get_the_title() . '</a></h4>';
+        $tb_previousevents .=  "Wann? " . $current_eventDate . " um " . $current_eventTime ." Uhr<br>";
+        $tb_previousevents .=  "Wo? " . esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) );
+        $tb_previousevents .=  '<br><br></li>';
     }
-    $tb_futureevents .=  '</ul>';
+    $tb_previousevents .=  '</ul>';
+    //$tb_previousevents .=  '</p><br>';
 } else {
-    $tb_futureevents = "<p>Aktuell stehen keine Touren an!</p>";
+    $tb_previousevents = "<p>Aktuell stehen keine Touren an!</p>";
 }
 /* Restore original Post Data */
 wp_reset_postdata();
 
 //$output = "<p>Hello, This is your another shortcode!</p>"; 
-return $tb_futureevents;    
+return $tb_previousevents;    
 }
 
 ?>
