@@ -76,18 +76,22 @@
                 echo "<tr>";
                 //echo "<td>" . $BUE_results[$i]->eventid . "</td>";
                 $tbuser_id = $BUE_results[$i]->userid;
+                $tbbike_id = $BUE_results[$i]->bikeid;
                 if ($current_tbuser == $tbuser_id)
                 {
                     $userAlreadyExistshere = true;
                 }
                 $tbfirstname = get_user_meta($tbuser_id, 'first_name', true);
+                // get user's name:
                 if ($tbfirstname == '')
                     $tbfirstname = get_user_meta($tbuser_id, 'nickname', true);
                 echo "<td>" . $tbfirstname . "</td>";
-                $tbbikename = get_metadata('posts', 40, 'title'); 
-                foreach ($tbbikename as $tbbikename1)
-                    { echo $tbbikename1;}
-                echo "<td>" . get_the_title($BUE_results[$i]->bikeid) . "</td>";
+                // get bike's name:
+                if ($tbbike_id == 0)
+                    { $tbbike_name = "fehlt noch!"; }
+                else
+                    { $tbbike_name = get_the_title($BUE_results[$i]->bikeid); }
+                echo "<td>" . $tbbike_name . "</td>";
                 echo "<td>" . $BUE_results[$i]->points . "</td></tr>\n";   
             }
         }
@@ -130,57 +134,71 @@
 
         //some browsing to the previous and next tours:
         echo "<p>";
-        //$meta_sql = get_meta_sql( $meta_query, 'post', $wpdb->posts, 'ID');
 
-        /*add_filter( 'posts_where' , 'posts_where' );
- 
-        function posts_where( $where ) {
- 
-        if( is_admin() ) {
-            global $wpdb;
-            $where .= " AND events_cf_Date < > GETDATE() ORDER BY events_cf_Date desc;";
-            }
-        return $where;
-        }*/
+        $tbtoday = date('Y-m-d');
 
-        /*$tb_order_by = "ORDER BY p.events_cf_date";
-        //$tb_post = "wp_posts";
-        $tb_order = "ASC";
-        $adjacent = "next";
-        apply_filters( "get_{$adjacent}_post_sort", $tb_order_by, $post, $tb_order );*/
-
-        $meta_query = array(
-            array(
-                'key' => 'events_cf_date',
-                'value' => date("Y-m-d"),
-                'compare' => '>='
-            )
+        $queryArgsNext = array( 
+            'post_type'	=> 'events',
+            'posts_per_page' => 1,
+            'order'     => 'ASC',
+            'orderby'   => 'events_cf_Date',
+            'meta_query' => array(
+                'relation' => 'AND',
+                 array(
+                     'key'     => 'events_cf_Date',
+                     'value'   => $eventTimestamp,
+                     'compare' => '>'
+                 ),
+                 array(
+                    'key'     => 'events_cf_Date',
+                    'value'   => $tbtoday,
+                    'compare' => '<'
+                )
+             )
         );
-        global $wpdb;
-        $meta_sql = get_meta_sql( $meta_query, 'post', $wpdb->posts, 'ID' );
 
-        /*$tb_where = "events_cf_Date < > GETDATE() ORDER BY events_cf_Date desc;"
-        apply_filters( "get_next_post_where", string $tb_where )*/
-        
+        $queryArgsPrev = array( 
+            'post_type'	=> 'events',
+            'posts_per_page' => 1,
+            'order'     => 'DESC',
+            'meta_key'  => 'events_cf_Date',
+            'orderby'   => 'events_cf_Date',
+            'meta_value'    => $eventTimestamp,
+            'meta_compare'  => '<',
+        );
 
-        $previousLink = get_previous_post_link();
-        //Todo: only show next link, if it's not in the future.
-        $nextLink = get_next_post_link();
-        echo "<div align=\"center\">" . $previousLink;
-        //echo "laenge:" . strlen($previousLink) . "next" . strlen($nextLink);
-        if (strlen($previousLink)>0 && strlen($nextLink)>0)
+        $tb_events_query1 = new WP_Query( $queryArgsNext );
+
+        if ( $tb_events_query1->have_posts() )
+        {
+            $tb_events_query1->the_post();
+            $nextLink = get_the_permalink();
+            $nextEventTitle = get_the_title();
+        }
+
+        $tb_events_query2 = new WP_Query( $queryArgsPrev );
+
+        if ( $tb_events_query2->have_posts() )
+        {
+            $tb_events_query2->the_post();
+            $previousLink = get_the_permalink();
+            $previousEventTitle = get_the_title();
+        }
+
+        if (isset($previousLink))
+            echo "<div align=\"center\">&laquo; <a href=\"".$previousLink. "\">".$previousEventTitle."</a>";
+        if (isset($previousLink) && isset($nextLink))
+        {
             echo "&nbsp;&nbsp;&nbsp;---&nbsp;&nbsp;&nbsp;";
-        echo $nextLink . "</div>";
+        }
+        else
+        {
+            echo "<div align=\"center\">";
+        }
+        if (isset($nextLink))
+            echo "<a href=\"".$nextLink. "\">".$nextEventTitle."</a> &raquo;";
         echo "</p>";
 
-        //wp_link_pages(
-		//	array(
-		//		'before'   => '<nav class="page-links" aria-label="' . esc_attr__( 'Page', 'twentytwentyone' ) . '">',
-		//		'after'    => '</nav>',
-		//		/* translators: %: Page number. */
-		//		'pagelink' => esc_html__( 'Page %', 'twentytwentyone' ),
-		//	)
-		//);
 		?>
 	</div><!-- .entry-content -->
 

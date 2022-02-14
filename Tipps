@@ -42,7 +42,7 @@ https://www.smashingmagazine.com/2011/10/how-to-use-ajax-in-wordpress/
 
     Users: 1, 2
     Events: 6,38,41
-    Bikes: 25,40
+    Bikes: 25,40,59
 
 wordpress.wp_Link_Bike_User_Event                  OK
 wordpress.wp_commentmeta                           OK
