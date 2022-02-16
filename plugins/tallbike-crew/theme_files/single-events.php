@@ -199,7 +199,9 @@
             echo "<a href=\"".$nextLink. "\">".$nextEventTitle."</a> &raquo;";
         echo "</p>";
 
-		?>
+        wp_reset_postdata();
+
+    ?>
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer default-max-width">
@@ -210,4 +212,4 @@
 		<?php get_template_part( 'template-parts/post/author-bio' ); ?>
 	<?php endif; ?>
 
-</article><!-- #post-<?php the_ID(); ?> -->
+</article>

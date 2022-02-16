@@ -17,6 +17,7 @@ plugins/simple-X-Plugin/
 plugins/TB-Crew/
 plugins/what-the-file/
 plugins/wordpress-importer/
+plugins/updraftplus/
 
 # ignore specific themes
 themes/twenty*/

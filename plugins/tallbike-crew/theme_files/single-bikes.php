@@ -16,7 +16,7 @@ get_header();
 
 	<header class="entry-header alignwide">
 		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
-		<?php twenty_twenty_one_post_thumbnail(); ?>
+		<?php //twenty_twenty_one_post_thumbnail(); ?>
 	</header><!-- .entry-header -->
 
 	<div class="entry-content">
@@ -24,10 +24,13 @@ get_header();
 		the_content();
 		$current_ID=get_the_ID();
 		?>
+		<p>
 		<strong>Erbauer:in: </strong> <?php echo esc_attr( get_post_meta($current_ID, 'bikes_cf_Creator', true ) ); ?>
 		<br>
-		<strong>Schwierigkeit: </strong> <?php echo esc_attr( get_post_meta($current_ID, 'bikes_cf_Complexity', true ) );
+		<strong>Schwierigkeit: </strong> <?php echo esc_attr( get_post_meta($current_ID, 'bikes_cf_Complexity', true ) );?>
+		</p>
 
+		<?php
 		// -------------------------------------
 		// Missing: The list of all events, this bike was part of:
 
