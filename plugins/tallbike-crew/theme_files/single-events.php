@@ -132,6 +132,9 @@
         echo "</p>";
 		// -------------------------------------
 
+        // Comments??
+        // https://stackoverflow.com/questions/12134183/how-to-add-comments-to-a-wordpress-theme
+        
         //some browsing to the previous and next tours:
         echo "<p>";
 
