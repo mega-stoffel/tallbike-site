@@ -135,7 +135,7 @@
         //some browsing to the previous and next tours:
         echo "<p>";
 
-        $tbtoday = date('Y-m-d');
+        $tbtoday = date('Y-m-d\TH:i');
 
         $queryArgsNext = array( 
             'post_type'	=> 'events',
@@ -152,7 +152,7 @@
                  array(
                     'key'     => 'events_cf_Date',
                     'value'   => $tbtoday,
-                    'compare' => '<'
+                    'compare' => '<='
                 )
              )
         );

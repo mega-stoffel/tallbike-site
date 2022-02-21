@@ -6,6 +6,9 @@
 
 function tb_future_events(){
 
+// the next event is shown until 01:00 of the next day, probably some UTC stuff.
+// Could maybe get fixed, one day....
+
     wp_reset_postdata();
 
     // get today's date:
@@ -64,7 +67,7 @@ function tb_previous_events(){
 wp_reset_postdata();
 
 // get today's date:
-$tbtoday = date('Y-m-d');
+$tbtoday = date('Y-m-d\TH:i');
 
 $queryArgs = array( 
     'post_type'	=> 'events',
@@ -99,6 +102,7 @@ if ( $tb_events_query->have_posts() ) {
         $tb_previousevents .=  '<h4><a href="'. get_the_permalink() .'">' . get_the_title() . '</a></h4>';
         $tb_previousevents .=  "Wann? " . $current_eventDate . " um " . $current_eventTime ." Uhr<br>";
         $tb_previousevents .=  "Wo? " . esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) );
+        //$tb_previousevents .=  $current_eventtimestamp . " -- " . $tbtoday .' </li>';
         $tb_previousevents .=  '<br><br></li>';
     }
     $tb_previousevents .=  '</ul>';
