@@ -18,10 +18,18 @@ plugins/TB-Crew/
 plugins/what-the-file/
 plugins/wordpress-importer/
 plugins/updraftplus/
+plugins/antispam-bee/
+plugins/backup-backup/
+plugins/backup-migration*/
+plugins/koko-analytics/
+plugins/wp-mail-smtp/
 
 # ignore specific themes
 themes/twenty*/
 themes/theme-*/
+
+# ignore my backups
+backup/
 
 # ignore node dependency directories
 node_modules/
