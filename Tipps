@@ -44,6 +44,12 @@ https://www.smashingmagazine.com/2011/10/how-to-use-ajax-in-wordpress/
     Events: 6,38,41
     Bikes: 25,40,59
 
+BUE Structure:
+id, bikeid, userid, eventid, points
+
+USER_Extend Structure:
+id, test (bool)
+
 wordpress.wp_Link_Bike_User_Event                  OK
 wordpress.wp_commentmeta                           OK
 wordpress.wp_comments                              OK

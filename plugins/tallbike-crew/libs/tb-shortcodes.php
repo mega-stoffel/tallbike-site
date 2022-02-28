@@ -117,4 +117,100 @@ wp_reset_postdata();
 return $tb_previousevents;    
 }
 
+
+function tb_all_users(){
+    
+    wp_reset_postdata();
+    
+    // get today's date:
+    $tbtoday = date('Y-m-d');
+    
+    $userqueryargs = array(
+        'orderby' => 'display_name',
+    );
+        // check for two meta_values
+        // 'meta_query' => array(
+        //     array(
+        //         // uses compare like WP_Query
+        //         'key' => 'some_user_meta_key',
+        //         'value' => 'some user meta value',
+        //         'compare' => '>'
+        //         ),
+        //     array(
+        //         // by default compare is '='
+        //         'key' => 'some_other_user_meta_key',
+        //         'value' => 'some other meta value',
+        //         ),
+        //     // add more
+        // ));
+
+//  $wp_user_search = $wpdb->get_results("SELECT ID, display_name FROM $wpdb->users ORDER BY ID");
+
+//  foreach ( $wp_user_search as $userid ) {
+// 	$user_id       = (int) $userid->ID;
+// 	$user_login    = stripslashes($userid->user_login);
+// 	$display_name  = stripslashes($userid->display_name);
+
+// 	$return  = '';
+// 	$return .= "\t" . '<li>'. $display_name .'</li>' . "\n";
+
+// 	print($return);
+
+    global $wpdb;
+    $tablelinkBUE_name = $wpdb->prefix . "Link_Bike_User_Event";
+
+    // Create the WP_User_Query object
+    $tb_user_query = new WP_User_Query($userqueryargs);
+    $tb_all_users = $tb_user_query->get_results();
+
+    $tb_ourUsers = "<table>"; //"<br><h3>Wir</h3><br>";
+    $tb_ourUsers .= "<tr><th>Name</th><th>Fahrten</th></tr>";
+
+    if (!empty($tb_all_users))
+    {        
+        // loop trough each author
+        foreach ($tb_all_users as $tb_cur_user)
+        {
+            $tb_ourUsers .= "<tr>";
+            // get all the user's data
+            $tb_cur_user_ID = $tb_cur_user->ID;
+            $tb_cur_user = get_userdata($tb_cur_user_ID);
+            $tb_cur_firstname = $tb_cur_user->first_name;
+            $tb_ourUsers .= "<td>" . $tb_cur_user_ID .": ";
+            if(strlen($tb_cur_firstname)==0)
+            {
+                $tb_ourUsers .= $tb_cur_user->nickname.  "</td>";    
+            }
+            else
+            {
+                $tb_ourUsers .= $tb_cur_firstname. "</td>";
+            }
+            // getting number of participated events
+
+            $sql_query_counter = "SELECT COUNT(eventid) as tourcounter FROM " . $tablelinkBUE_name . " WHERE userid = ". esc_sql($tb_cur_user_ID);
+            $BUE_results = $wpdb->get_results($sql_query_counter); 
+            $BUE_counter = count($BUE_results);
+            if ($BUE_counter == 1)
+            {
+                $tb_ourUsers .= "<td>" .$BUE_results[0]->tourcounter . "</td>";
+            }
+            else
+            {
+                $tb_ourUsers .= "<td>N I X</td>";
+            }
+            $tb_ourUsers .= "</tr>";
+        }
+        
+    } else {
+        $tb_ourUsers .= "No users found\n";
+    }
+    $tb_ourUsers .= "</table>";
+
+    /* Restore original Post Data */
+    wp_reset_postdata();
+
+    //$output = "<p>Hello, This is your another shortcode!</p>"; 
+    return $tb_ourUsers;    
+    }    
+
 ?>

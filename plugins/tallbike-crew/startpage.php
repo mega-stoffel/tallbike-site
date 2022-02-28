@@ -148,6 +148,41 @@ function my_must_login() {
 require_once( 'libs/tb-shortcodes.php' );
 add_shortcode('tb_kommendeTouren', 'tb_future_events');
 add_shortcode('tb_vergangeneTouren', 'tb_previous_events');
+add_shortcode('tb_all_users', 'tb_all_users');
+
+// -----------------------------------
+//     P A G E T E M P L A T E S
+// -----------------------------------
+//require_once( 'libs/tb-pagetemplates.php' );
+
+// load templates name in page attributes
+function tb_users_add_template ($templates)
+{
+   // the template php file = the template name
+   $templates['tb_usersshow.php'] = 'Tallbike Menschen';
+   return $templates;
+}
+//add_filter ('theme_page_templates', 'tb_users_add_template');
+
+function tb_users_load_template( $tb_template )
+{
+   if(  get_page_template_slug() === 'tb_usersshow.php' )
+   {
+      if ( $theme_file = locate_template( array( 'tb_usersshow.php' )))
+      {
+         $tb_template = $theme_file;
+      }
+      else
+      {
+         $tb_template = plugin_dir_path( __DIR__ ) . 'templates/tb_usersshow.php';
+      }
+   }
+   if($tb_template == '') {
+       throw new \Exception('No template found');
+   }
+   return $tb_template;
+}
+//add_filter ('page_templates', 'tb_users_load_template');
 
 
 // ---------------------------------
