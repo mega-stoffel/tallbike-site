@@ -47,8 +47,9 @@ https://www.smashingmagazine.com/2011/10/how-to-use-ajax-in-wordpress/
 BUE Structure:
 id, bikeid, userid, eventid, points
 
-USER_Extend Structure:
-id, test (bool)
+// USER_Extend Structure:
+// id, test (bool), userid
+
 
 wordpress.wp_Link_Bike_User_Event                  OK
 wordpress.wp_commentmeta                           OK

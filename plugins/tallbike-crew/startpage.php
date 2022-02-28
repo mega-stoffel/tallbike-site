@@ -3,7 +3,7 @@
 Plugin Name:  Tallbike-Crew
 Plugin URI:   https://github.com/mega-stoffel/tallbike-site
 Description:  Adding Bikes and Events to Wordpress and connecting them with the existing Users.
-Version:      0.2
+Version:      0.3
 Author:       X-tof Hoyer
 Author URI:   https://tallbike-stuttgart.de
 */
