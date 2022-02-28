@@ -177,12 +177,12 @@ function tb_all_users(){
     
     //users.ID as UserID, COUNT(BUE.eventid) AS event_count
 
-    $sql_query_join1 = "SELECT users.ID as UID, users.user_nicename as nicename, users.display_name as displayname, BUE.eventid as eid, count(BUE.eventid) as counter 
+    $sql_query_join1 = "SELECT users.ID as UID, users.user_nicename as nicename, users.display_name as displayname, count(BUE.eventid) as counter 
     FROM " .$tableUsers_name . " AS users
-    LEFT JOIN " . $tablelinkBUE_name . " AS BUE ON BUE.userid = users.ID
-    WHERE UserID NOT IN (4,3)
+    LEFT JOIN " . $tablelinkBUE_name . " as BUE ON users.ID = BUE.userid
+    WHERE users.id NOT IN (1,2)
     GROUP BY 1
-    ORDER BY 1 ASC";
+    ORDER BY counter DESC";
 
     $joined_results = $wpdb->get_results($sql_query_join1); 
     $joined_counter = count($joined_results);
@@ -199,14 +199,14 @@ function tb_all_users(){
         foreach ($joined_results as $joined_result)
         {
             $tb_ourUsers .= "<tr><td>";
-            $tb_nicename = $joined_results[$i]->nicename;
-            if (strlen($tb_nicename)!=0)
+            $tb_displayname = $joined_results[$i]->displayname;
+            if (strlen($tb_displayname)!=0)
             {
-                $tb_ourUsers .= $tb_nicename;
+                $tb_ourUsers .= $tb_displayname;
             }
             else
             {
-                $tb_ourUsers .= $joined_results[$i]->displayname;
+                $tb_ourUsers .= $joined_results[$i]->nicename;
             }
             $tb_ourUsers .= "</td>";
             $tb_ourUsers .= "<td>" . $joined_results[$i++]->counter ."</td>";
