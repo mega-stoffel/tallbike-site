@@ -117,7 +117,6 @@ wp_reset_postdata();
 return $tb_previousevents;    
 }
 
-
 function tb_all_users(){
     
     wp_reset_postdata();
@@ -158,58 +157,116 @@ function tb_all_users(){
 
     global $wpdb;
     $tablelinkBUE_name = $wpdb->prefix . "Link_Bike_User_Event";
+    $tableUserExtend_name = $wpdb->prefix . "Users_Extend";
+    $tableUsers_name = $wpdb->prefix . "users";
 
     // Create the WP_User_Query object
-    $tb_user_query = new WP_User_Query($userqueryargs);
-    $tb_all_users = $tb_user_query->get_results();
+    //$tb_user_query = new WP_User_Query($userqueryargs);
+    //$tb_all_users = $tb_user_query->get_results();
 
-    $tb_ourUsers = "<table>"; //"<br><h3>Wir</h3><br>";
-    $tb_ourUsers .= "<tr><th>Name</th><th>Fahrten</th></tr>";
+    //$sql_query_counter = "SELECT COUNT(eventid) as tourcounter FROM " . $tablelinkBUE_name . " WHERE userid = ". esc_sql($tb_cur_user_ID);
+    // $sql_query_counter = "SELECT
+    //     users.id as UserID, BUE.userid as BUEUser, userext.userid as UserExt
+    //     FROM " . $tablelinkBUE_name . " AS BUE, wp_users as users, ". $tableUserExtend_name . " as userext";
+    $sql_query_counter2 = "SELECT
+        BUE.userid as BUEUser, BUE.eventid as BUEEvent, users.id as UserID, users.user_nicename as nicename, users.display_name as displayname
+        FROM " . $tablelinkBUE_name . " AS BUE
+        JOIN " . $tableUsers_name . " AS users ON BUE.userID = users.id WHERE UserID NOT IN (1)";
+        //JOIN " .$tableUserExtend_name. " AS UserExt ON BUE.UserID = UserExt.userid)";// WHERE (visible = 1)";
+    
+    
+    //users.ID as UserID, COUNT(BUE.eventid) AS event_count
 
-    if (!empty($tb_all_users))
+    $sql_query_join1 = "SELECT users.ID as UID, users.user_nicename as nicename, users.display_name as displayname, BUE.eventid as eid, count(BUE.eventid) as counter 
+    FROM " .$tableUsers_name . " AS users
+    LEFT JOIN " . $tablelinkBUE_name . " AS BUE ON BUE.userid = users.ID
+    WHERE UserID NOT IN (4,3)
+    GROUP BY 1
+    ORDER BY 1 ASC";
+
+    $joined_results = $wpdb->get_results($sql_query_join1); 
+    $joined_counter = count($joined_results);
+
+    if ($joined_counter == 0)
+        exit;
+    $i=0;
+
+    if (!empty($joined_results))
     {        
-        // loop trough each author
-        foreach ($tb_all_users as $tb_cur_user)
-        {
-            $tb_ourUsers .= "<tr>";
-            // get all the user's data
-            $tb_cur_user_ID = $tb_cur_user->ID;
-            $tb_cur_user = get_userdata($tb_cur_user_ID);
-            $tb_cur_firstname = $tb_cur_user->first_name;
-            $tb_ourUsers .= "<td>" . $tb_cur_user_ID .": ";
-            if(strlen($tb_cur_firstname)==0)
-            {
-                $tb_ourUsers .= $tb_cur_user->nickname.  "</td>";    
-            }
-            else
-            {
-                $tb_ourUsers .= $tb_cur_firstname. "</td>";
-            }
-            // getting number of participated events
+        $tb_ourUsers = "<p><table>"; //"<br><h3>Wir</h3><br>";
+        $tb_ourUsers .= "<tr><th>Name</th><th>Fahrten</th></tr>";
 
-            $sql_query_counter = "SELECT COUNT(eventid) as tourcounter FROM " . $tablelinkBUE_name . " WHERE userid = ". esc_sql($tb_cur_user_ID);
-            $BUE_results = $wpdb->get_results($sql_query_counter); 
-            $BUE_counter = count($BUE_results);
-            if ($BUE_counter == 1)
+        foreach ($joined_results as $joined_result)
+        {
+            $tb_ourUsers .= "<tr><td>";
+            $tb_nicename = $joined_results[$i]->nicename;
+            if (strlen($tb_nicename)!=0)
             {
-                $tb_ourUsers .= "<td>" .$BUE_results[0]->tourcounter . "</td>";
+                $tb_ourUsers .= $tb_nicename;
             }
             else
             {
-                $tb_ourUsers .= "<td>N I X</td>";
+                $tb_ourUsers .= $joined_results[$i]->displayname;
             }
+            $tb_ourUsers .= "</td>";
+            $tb_ourUsers .= "<td>" . $joined_results[$i++]->counter ."</td>";
             $tb_ourUsers .= "</tr>";
         }
-        
-    } else {
-        $tb_ourUsers .= "No users found\n";
     }
-    $tb_ourUsers .= "</table>";
+    else
+    {
+        $tb_ourUsers .= "<tr><td>No users found</td><td></td></tr>";
+    }
+    $tb_ourUsers .= "</table></p>";
 
-    /* Restore original Post Data */
     wp_reset_postdata();
 
-    //$output = "<p>Hello, This is your another shortcode!</p>"; 
+    // $tb_ourUsers .= "<p><table>"; //"<br><h3>Wir</h3><br>";
+    // $tb_ourUsers .= "<tr><th>Name</th><th>Fahrten</th></tr>";
+
+    // if (!empty($tb_all_users))
+    // {        
+    //     // loop trough each author
+    //     foreach ($tb_all_users as $tb_cur_user)
+    //     {
+    //         $tb_ourUsers .= "<tr>";
+    //         // get all the user's data
+    //         $tb_cur_user_ID = $tb_cur_user->ID;
+    //         $tb_cur_user = get_userdata($tb_cur_user_ID);
+    //         $tb_cur_firstname = $tb_cur_user->first_name;
+    //         $tb_ourUsers .= "<td>" . $tb_cur_user_ID .": ";
+    //         if(strlen($tb_cur_firstname)==0)
+    //         {
+    //             $tb_ourUsers .= $tb_cur_user->nickname.  "</td>";    
+    //         }
+    //         else
+    //         {
+    //             $tb_ourUsers .= $tb_cur_firstname. "</td>";
+    //         }
+    //         // getting number of participated events
+
+    //         $sql_query_counter = "SELECT COUNT(eventid) as tourcounter FROM " . $tablelinkBUE_name . " WHERE userid = ". esc_sql($tb_cur_user_ID);
+    //         $BUE_results = $wpdb->get_results($sql_query_counter); 
+    //         $BUE_counter = count($BUE_results);
+    //         if ($BUE_counter == 1)
+    //         {
+    //             $tb_ourUsers .= "<td>" .$BUE_results[0]->tourcounter . "</td>";
+    //         }
+    //         else
+    //         {
+    //             $tb_ourUsers .= "<td>N I X</td>";
+    //         }
+    //         $tb_ourUsers .= "</tr>";
+    //     }
+        
+    // } else {
+    //     $tb_ourUsers .= "<tr><td>No users found</td><td></td></tr>";
+    // }
+    // $tb_ourUsers .= "</table></p>";
+
+    // /* Restore original Post Data */
+    // wp_reset_postdata();
+
     return $tb_ourUsers;    
     }    
 
