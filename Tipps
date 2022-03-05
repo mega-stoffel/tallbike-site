@@ -50,6 +50,8 @@ id, bikeid, userid, eventid, points
 // USER_Extend Structure:
 // id, test (bool), userid
 
+SQL Join Explanations:
+https://mattmazur.com/2017/11/01/counting-in-mysql-when-joins-are-involved/
 
 wordpress.wp_Link_Bike_User_Event                  OK
 wordpress.wp_commentmeta                           OK
