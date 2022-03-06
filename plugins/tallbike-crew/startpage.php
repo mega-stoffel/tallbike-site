@@ -89,8 +89,45 @@ include "libs/add_shortcodes.php";
 // -----------------------------------------------------
 // Some working AJAX !
 // -----------------------------------------------------
+// add user to tour
+// -----------------------------------------------------
 add_action("wp_ajax_tb_addme_tour", "tb_addme_tour");
 //add_action("wp_ajax_nopriv_my_user_vote", "my_must_login");
+//function my_must_login() {
+//    echo "You must log in to vote";
+//    die();
+// }
+
+add_action('wp_ajax_get_states_by_ajax', 'get_states_by_ajax_callback');
+
+function get_states_by_ajax_callback() {
+
+   //echo "hack-check";
+   //   check_ajax_referer('show_all_userevents_nonce', 'security');
+   //echo "ohne hacking!";
+
+   $current_userID = $_REQUEST["tbuser"];
+
+   global $wpdb;
+   $tablelinkBUE_name = $wpdb->prefix . "Link_Bike_User_Event";
+   $tableposts_name = $wpdb->prefix . "posts";
+
+   $sql_tours_join = "SELECT BUElink.eventid AS eventID, BUElink.userid as userID, posts.post_title as eventTitle
+   FROM " .$tablelinkBUE_name . " AS BUElink
+   JOIN " . $tableposts_name . " AS posts ON eventID = posts.id
+   WHERE BUElink.userid = " .$current_userID. "
+   order by posts.ID desc;";
+
+   $arr_states = $wpdb->get_results( $wpdb->prepare($sql_tours_join));
+   
+   if ( $arr_states ) : 
+      foreach ($arr_states as $state) :
+         $ajaxoutput .= "<li>" . $state->eventID .": " . $state->eventTitle ."</li>";
+      endforeach;
+   endif;
+   echo $ajaxoutput;
+   wp_die();
+}
 
 function tb_addme_tour() {
 
@@ -137,10 +174,86 @@ function tb_addme_tour() {
 
 }
 
-function my_must_login() {
-   echo "You must log in to vote";
-   die();
+// -----------------------------------------------------
+// show all user's tours
+// -----------------------------------------------------
+
+function tb_addon_scripts() {
+   // Register the script
+   wp_register_script( 'custom-script', '/wp-content/plugins/tallbike-crew/js/tb-ajax.js', array('jquery'), false, true );
+ 
+   // Localize the script with new data
+   $script_data_array = array(
+       'ajaxurl' => admin_url( 'admin-ajax.php' ),
+       'security' => wp_create_nonce( 'show_all_userevents_nonce' ),
+   );
+   wp_localize_script( 'custom-script', 'tb_scripts', $script_data_array );
+ 
+   // Enqueued script with localized data.
+   wp_enqueue_script( 'custom-script' );
 }
+
+add_action( 'wp_enqueue_scripts', 'tb_addon_scripts' );
+
+
+function tb_show_usertours() {
+   
+   return "output";
+   // $postId = (int) $_POST['postId'];
+
+   // $viewsCount = get_post_meta($postId, '_view_count', true);
+   // $viewsCount++;
+
+   // update_post_meta($postId, '_view_count', $viewsCount);
+
+   wp_die();
+}
+add_action('wp_ajax_tb_show_usertours', 'tb_show_usertours');
+//add_action('wp_ajax_nopriv_example_view_increment', 'example_view_increment');
+
+
+// add_action("wp_ajax_tb_show_usertours", "tb_show_usertours");
+
+// function tb_show_usertours() {
+
+//    global $wpdb;
+
+//    if ( !wp_verify_nonce( $_REQUEST['nonce'], "show_all_userevents_nonce")) {
+//       exit("Nene, bitte nicht hacken!");
+//    }
+
+//    $current_userID = $_REQUEST["tbuser"];
+//    $tablelinkBUE_name = $wpdb->prefix . "Link_Bike_User_Event";
+
+//    $sql_tours_join = "SELECT BUElink.eventid AS eventID, BUElink.userid as userID 
+//    FROM " .$tablelinkBUE_name . " AS BUElink
+//    WHERE BUElink.userid = " .$current_userID.";";
+   
+//    $rows_affected = $wpdb->get_results($sql_tours_join);
+//    //echo "Rows: " . $rows_affected;
+
+//    $result['type'] = "success";
+//    $result['usertours'] = "some rows_affected: " . $rows_affected;
+
+//    echo "xreq: ". $_SERVER['HTTP_X_REQUESTED_WITH']; //ist empty
+//    echo "- tolower: " . strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) ;
+
+//    if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+//       $result = json_encode($result);
+//       echo "im if!";
+//       echo $result;
+//    }
+//    else {
+//       header("Location: ".$_SERVER["HTTP_REFERER"]);
+//       echo "nix if!";
+//    }
+
+//    die();
+
+// }
+// -----------------------------------------------------
+// -----------------------------------------------------
+
 
 // -----------------------------------
 //       S H O R T C O D E S

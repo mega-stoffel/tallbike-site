@@ -177,10 +177,11 @@ function tb_all_users(){
     
     //users.ID as UserID, COUNT(BUE.eventid) AS event_count
 
+    require_once('exclude_sql.php');
     $sql_query_join1 = "SELECT users.ID as UID, users.user_nicename as nicename, users.display_name as displayname, count(BUE.eventid) as counter 
     FROM " .$tableUsers_name . " AS users
     LEFT JOIN " . $tablelinkBUE_name . " as BUE ON users.ID = BUE.userid
-    WHERE users.id NOT IN (1,2)
+    WHERE users.id NOT IN (". $users_not_in .")
     GROUP BY 1
     ORDER BY counter DESC";
 
@@ -199,6 +200,7 @@ function tb_all_users(){
         foreach ($joined_results as $joined_result)
         {
             $tb_ourUsers .= "<tr><td>";
+            $tb_userid = $joined_results[$i]->UID;
             $tb_displayname = $joined_results[$i]->displayname;
             if (strlen($tb_displayname)!=0)
             {
@@ -209,7 +211,22 @@ function tb_all_users(){
                 $tb_ourUsers .= $joined_results[$i]->nicename;
             }
             $tb_ourUsers .= "</td>";
-            $tb_ourUsers .= "<td>" . $joined_results[$i++]->counter ."</td>";
+            $tb_ourUsers .= "<td>" . $joined_results[$i++]->counter ."&nbsp;";
+
+            $tour_nonce = wp_create_nonce("show_all_userevents_nonce");
+            $usertour_link = admin_url('admin-ajax.php?action=tb_show_usertours&tbuser='.$tb_userid.'&nonce='.$tour_nonce);
+            //$usertour_link = admin_url('admin-ajax.php?action=get_states_by_ajax&tbuser='.$tb_userid.'&nonce='.$tour_nonce);
+            
+            //echo '<br><a class="user_vote" data-nonce="' . $nonce . '" data-post_id="' . $post->ID . '" tbuser="' . $current_tbuser.'"';
+            //echo ' href="' . $link . '">Ich war dabei!</a></p>';
+
+            $tb_ourUsers .= "<a class=\"show_usertours\" name=\"show_usertours\" tbuser=\"" . $tb_userid . "\">"; // href=\"" . $usertour_link . "\">";
+            $tb_ourUsers .=   "<img src='/wp-content/uploads/2022/03/arrow-down.png' width=\"15\" class=\"show_usertours\">";
+            $tb_ourUsers .= "</a>";
+
+            $tb_ourUsers .= "<a class=\"show_usertours2\" data-nonce=\"" . $tour_nonce . "\" tbuser=\"" . $tb_userid . "\" href=\"" . $usertour_link . "\">";
+            $tb_ourUsers .=   "<img src='/wp-content/uploads/2022/03/arrow-down.png' width=\"15\"></td>";
+            $tb_ourUsers .= "</a>";
             $tb_ourUsers .= "</tr>";
         }
     }
