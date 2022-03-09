@@ -87,10 +87,12 @@ include "install/tallbike-installation.php";
 include "libs/add_shortcodes.php";
 
 // -----------------------------------------------------
-// Some working AJAX !
+// Some working AJAX! Na, well, ähm, so - it's working, yeah. But thats everything. No AJAX at all!
 // -----------------------------------------------------
 add_action("wp_ajax_tb_addme_tour", "tb_addme_tour");
-//add_action("wp_ajax_nopriv_my_user_vote", "my_must_login");
+//add_action("wp_ajax_nopriv_tb_addme_tour", "must_login_first");
+add_action("wp_ajax_tb_removeme_tour", "tb_removeme_tour");
+//add_action("wp_ajax_nopriv_tb_removeme_tour", "must_login_first");
 
 function tb_addme_tour() {
 
@@ -137,7 +139,46 @@ function tb_addme_tour() {
 
 }
 
-function my_must_login() {
+function tb_removeme_tour() {
+
+   global $wpdb;
+
+   if ( !wp_verify_nonce( $_REQUEST['nonce'], "tb_removeme_tour_nonce")) {
+      exit("So kommst Du hier nicht raus!");
+   }   
+   $current_eventID = $_REQUEST["post_id"];
+   $current_userID = $_REQUEST["tbuser"];
+
+   $sql_delete_query = "DELETE FROM wp_Link_Bike_User_Event WHERE (userid='". $current_userID ."' AND eventid ='". $current_eventID ."')";
+   
+   $wpdb->query(
+      $wpdb->prepare($sql_delete_query)
+      );
+
+   header("Location: ".$_SERVER["HTTP_REFERER"]);
+
+   // if($vote === false) {
+   //    $result['type'] = "error";
+   //    $result['vote_count'] = $vote_count;
+   // }
+   // else {
+   //    $result['type'] = "success";
+   //    $result['vote_count'] = $new_vote_count;
+   // }
+
+   // if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+   //    $result = json_encode($result);
+   //    echo $result;
+   // }
+   // else {
+   //    header("Location: ".$_SERVER["HTTP_REFERER"]);
+   // }
+
+   die();
+
+}
+
+function must_login_first() {
    echo "You must log in to vote";
    die();
 }
