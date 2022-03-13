@@ -237,6 +237,41 @@ function tb_users_load_template( $tb_template )
 // add_action( 'widgets_init', 'tb_future_events_widget' );
 
 
+// ---------------------------------
+//       A J A X
+// ---------------------------------
+
+function tb_blog_scripts() {
+   // Register the script
+   wp_register_script( 'show-form-script', plugins_url( '/js/tb-ajax.js', __FILE__ ), array('jquery'), false, true );
+   
+   // Localize the script with new data
+   $script_data_array = array(
+      'ajaxurl' => admin_url( 'admin-ajax.php' ),
+      'security' => wp_create_nonce( 'load_points_form' ),
+   );
+   
+   // Enqueued script with localized data.
+   wp_enqueue_script('show-form-script' );
+   wp_enqueue_script('show-form-script', plugins_url( '/js/tb-ajax.js', __FILE__ ), array('jquery'));
+
+   // Localize the script
+   wp_localize_script( 'show-form-script', 'blog', $script_data_array );
+
+   //zweiter Versuch
+   // wp_enqueue_script('tb-ajax-js', plugins_url( '/js/tb-ajax.js', __FILE__ ),array('jquery'));
+   // wp_localize_script('tb-ajax-js', 'blog', array( 'ajax_url' => admin_url( 'admin-ajax.php' ) ) );
+}
+add_action( 'wp_enqueue_scripts', 'tb_blog_scripts' );
+
+add_action('wp_ajax_show_points_form_ajax', 'show_points_form_ajax');
+
+function show_points_form_ajax() {
+   return "hier!";
+   check_ajax_referer('load_points_form', 'security');
+   echo "some output!";
+   wp_die();
+}
 
 
 // --------------------------------------------------------

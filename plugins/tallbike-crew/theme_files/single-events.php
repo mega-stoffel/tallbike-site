@@ -110,12 +110,54 @@
                     echo ' href="' . $link . '"><img src="/wp-content/plugins/tallbike-crew/pictures/x.png" width="14" title="doch nicht dabei"></a>&nbsp;';
                 }
                 echo $tbfirstname . "</td>";
-                // get bike's name:
-                if ($tbbike_id == 0)
-                    { $tbbike_name = "fehlt noch!"; }
+                // get bike's name or enter new one
+                if ($tbbike_id == 0 || $userAlreadyExistshere || $tbadmin)
+                {
+                    //$tbbike_name = get_the_title($BUE_results[$i]->bikeid);
+
+                    wp_reset_postdata();
+
+                    $queryArgs = array( 
+                        'post_type'	=> 'bikes',
+                        'posts_per_page' => 100,
+                        //'orderby'   => 'rand',
+                        'orderby'   => 'ID',
+                        'order'     => 'DESC',
+                    );
+
+                    $tb_bikes_query = new WP_Query( $queryArgs ); 
+                    
+                    if ( $tb_bikes_query->have_posts() )
+                    {
+                        echo "<td>";
+                        echo "<div class=\"tb-ajax-bikes\">";
+                        echo "<select name=\"bike-id\" class=\"bike-id\">";
+                        if ($tbbike_id != 0)
+                        {
+                            echo '<option value=\"'. $tbbike_id .'\">' . get_the_title($BUE_results[$i]->bikeid) . '</option>';
+                        }
+                        else
+                        {
+                            echo '<option value=\"\">Rad auswählen!</option>';
+                        }
+                        //echo "<option value=\"\"></option>";
+                        while ( $tb_bikes_query->have_posts() ) {
+                            $tb_bikes_query->the_post();
+                            echo '<option value=\"'. get_the_id() .'\">' . get_the_title() . '</option>';
+                        }
+
+                        echo "</select>";
+                        echo "</div>";
+                        echo "<div class=\"load-points-form\"></div>";
+                        echo "</td>";
+                        //echo "<td>" . $tbbike_name . "</td>";
+                    }
+                }
                 else
-                    { $tbbike_name = get_the_title($BUE_results[$i]->bikeid); }
-                echo "<td>" . $tbbike_name . "</td>";
+                {
+                    $tbbike_name = "fehlt noch!";
+                    echo "<td>" . $tbbike_name . "</td>";
+                }
                 echo "<td>" . $BUE_results[$i]->points . "</td></tr>\n";   
             }
         }
