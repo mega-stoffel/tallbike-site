@@ -20,7 +20,7 @@ function tb_future_events(){
         'post_type'	=> 'events',
         'posts_per_page' => 3,
         //'orderby'   => 'events_cf_date',
-        'order'     => 'DESC',
+        'order'     => 'ASC',
         'meta_key'  => 'events_cf_Date',
         'orderby'   => 'events_cf_Date',
         'meta_value'    => $tbtoday,
