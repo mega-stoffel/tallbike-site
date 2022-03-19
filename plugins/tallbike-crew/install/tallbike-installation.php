@@ -7,6 +7,7 @@ function tallbike_install() {
     // adding the 
     tbBikes_setup_post_type(); 
     tbEvents_setup_post_type(); 
+    tbBadges_setup_post_type();
 
     // adding the dedicated SQL commands:
     tbSQL_setup(); 
@@ -75,20 +76,47 @@ function tbEvents_setup_post_type() {
     register_post_type( 'Events', $Events_Options); 
 } 
 
+function tbBadges_setup_post_type() {
+    $Badges_Labels = array(
+        'name'          => 'Auszeichnungen',
+        'singular_name' => 'Auszeichnung',
+        'search_items'  => 'Auszeichnung suchen',
+        'all_items'     => 'Alle Auszeichnungen',
+        'parent_item'   => 'Parent?',
+        'parent_item_colon' => 'Parent?:',
+        'edit_item'     => 'Auszeichnung bearbeiten',
+        'update_item'   => 'Auszeichnung aktualisieren',
+        'add_new_item'  => 'Neue Auszeichnung hinzufügen',
+        'new_item_name' => 'Neue Auszeichnung',
+        'menu_name'     => 'Auszeichnungen',
+    );
+
+    $Badges_Options = array(
+        'labels'      => $Badges_Labels,
+        'public'      => true,
+        'has_archive' => true,
+        'menu_position' => 6,
+        'supports' => ['title', 'editor' ,'author', 'comments', 'custom-fields','thumbnail','page-attributes','post-formats,'],
+        'rewrite'     => array( 'slug' => 'badges' ), 
+        'delete_with_user' => false,
+        'show_in_rest' => true,
+    );
+    register_post_type( 'Badges', $Badges_Options); 
+} 
+
+/*
+ * Registering the additional meta boxes
+ */
 function bikes_register_meta_boxes() {
     add_meta_box( 'bikes_level', __( 'Details', 'hcf' ), 'bikes_details_display_callback', 'bikes' );
 }
 add_action( 'add_meta_boxes', 'bikes_register_meta_boxes' );
 
-/**
+/*
  * Meta box display callback.
- *
- * @param WP_Post $post Current post object.
  */
 function bikes_details_display_callback( $post ) {
     include plugin_dir_path( __FILE__ ) . '../libs/bikes-form.php';
-    //include '../libs/bikes-form.php';
-    //echo "Schwierigkeit";
 }
 
 
@@ -99,14 +127,24 @@ function events_register_meta_boxes() {
 }
 add_action( 'add_meta_boxes', 'events_register_meta_boxes' );
 
-/**
+/*
  * Meta box display callback.
- *
- * @param WP_Post $post Current post object.
  */
 function events_details_display_callback( $post ) {
     include plugin_dir_path( __FILE__ ) . '../libs/events-form.php';
 }
+
+/*
+ * Meta box display callback.
+ */
+function badges_details_display_callback( $post ) {
+    include plugin_dir_path( __FILE__ ) . '../libs/badges-form.php';
+}
+
+function badges_register_meta_boxes() {
+    add_meta_box( 'badges_details', __( 'Details', 'hcf' ), 'badges_details_display_callback', 'badges' );
+}
+add_action( 'add_meta_boxes', 'badges_register_meta_boxes' );
 
 /**
  * Save meta box content.
@@ -122,6 +160,7 @@ function events_save_meta_box( $post_id ) {
         'events_cf_Place',
         'bikes_cf_Complexity',
         'bikes_cf_Creator',
+        'badges_cf_points',
     ];
     foreach ( $fields as $field ) {
         if ( array_key_exists( $field, $_POST ) ) {
@@ -130,7 +169,6 @@ function events_save_meta_box( $post_id ) {
      }
 }
 add_action( 'save_post', 'events_save_meta_box' );
-
 
 /*function add_bikes_meta_box($meta_box_id, $meta_box_title) {
     $plugin_prefix = 'bikes_post_type_';
