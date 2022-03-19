@@ -71,6 +71,7 @@
         $BUE_results = $wpdb->get_results("SELECT * FROM " . $tablelinkBUE_name . " WHERE eventid = ". esc_sql($current_eventID) ." ORDER BY RAND()"); 
         $BUE_counter = count($BUE_results);
         $userAlreadyExistshere = false;
+        $userIsInList = false;
 
         // $all_meta_for_user = get_user_meta(1);
         // print_r( $all_meta_for_user ) . "<br>";
@@ -92,6 +93,7 @@
                 if ($current_tbuser == $tbuser_id)
                 {
                     $userAlreadyExistshere = true;
+                    $userIsInList = true;
                 }
                 else
                 {
@@ -128,7 +130,8 @@
         if( is_user_logged_in() )
         {
             // Eintragen-Link nicht anzeigen, wenn schon bei der Tour dabei:
-            if ($userAlreadyExistshere != true)
+            //if ($userAlreadyExistshere != true)
+            if ($userIsInList != true)
             {
                 $nonce = wp_create_nonce("tb_addme_tour_nonce");
                 $link = admin_url('admin-ajax.php?action=tb_addme_tour&post_id='.$post->ID.'&tbuser='.$current_tbuser.'&nonce='.$nonce);
