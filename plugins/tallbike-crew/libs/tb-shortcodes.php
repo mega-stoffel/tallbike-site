@@ -270,4 +270,53 @@ function tb_all_users(){
     return $tb_ourUsers;    
     }    
 
+    
+function tb_all_badges(){
+        
+    wp_reset_postdata();
+
+    // get today's date:
+    //$tbtoday = date('Y-m-d');
+
+    // Query Definition, especially for meta values and their comparision
+    // https://developer.wordpress.org/reference/classes/wp_query/
+    $queryArgs = array( 
+        'post_type'	=> 'badges',
+        'posts_per_page' => 15,
+        //'orderby'   => 'events_cf_date',
+        'order'     => 'DESC',
+    );
+
+    $tb_ourBadges = "<br><h1>Auszeichnungen!</h1><br>";
+
+    $tb_badges_query = new WP_Query( $queryArgs ); 
+
+    if ( $tb_badges_query->have_posts() ) {
+        $tb_ourBadges .= "<ul>";
+        while ( $tb_badges_query->have_posts() ) {
+            $tb_badges_query->the_post();
+            $current_badgeID = get_the_ID();
+            //$current_eventtimestamp = esc_attr( get_post_meta($current_eventID, 'events_cf_Date', true ) );
+            //$eventDateFormatted = strtotime($current_eventtimestamp);
+            //$current_eventDate = date("d.m.Y",$eventDateFormatted);
+            //$current_eventTime = date("H:i",$eventDateFormatted);
+            //$date = new DateTime($current_eventtimestamp);
+            //$date->format('d.M.YY');
+            //$current_eventDate = date('d.M.Y', $current_eventtimestamp);
+            $tb_ourBadges .=  '<li><h3>'. get_the_title() . '</h3>';
+            $tb_ourBadges .=  get_the_post();
+            //$tb_ourBadges .=  "Wann? " . $current_eventDate . " um " . $current_eventTime ." Uhr<br>";
+            //$tb_ourBadges .=  "Wo? " . esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) ) . "</li>";
+            $tb_ourBadges .= '</li>';
+        }
+        $tb_ourBadges .=  '</ul>';
+    } else {
+        $tb_ourBadges = "<p>Leider werden gerade keine Auszeichnungen gefunden!</p>";
+    }
+    /* Reset/restore everything to normal */
+    wp_reset_postdata();
+    
+    return $tb_ourBadges;
+}
+
 ?>
