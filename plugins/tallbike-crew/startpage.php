@@ -101,41 +101,59 @@ function tb_addme_tour() {
    if ( !wp_verify_nonce( $_REQUEST['nonce'], "tb_addme_tour_nonce")) {
       exit("So wird das nix!");
    }   
-   $current_eventID = $_REQUEST["post_id"];
-   $current_userID = $_REQUEST["tbuser"];
+   $current_eventID = esc_attr($_REQUEST["post_id"]);
+   $current_userID = esc_attr($_REQUEST["tbuser"]);
+   $check_userID = get_current_user_id();
 
-   //$addme = update_post_meta($_REQUEST["post_id"], "events_cf_Length", $new_vote_count);
+   // check, if current user has the same ID like in the parameter or is an admin
+   if(($current_userID == $check_userID) OR current_user_can('manage_options'))
+   {
+      // check, if the IDs are numeric
+      if (is_numeric($current_eventID) AND is_numeric($current_userID))
+      {
+         //$addme = update_post_meta($_REQUEST["post_id"], "events_cf_Length", $new_vote_count);
 
-   $rows_affected = $wpdb->insert
-   (
-      'wp_Link_Bike_User_Event',
-      array(
-          'userid' => $current_userID,
-          'eventid' => $current_eventID,
-          'text' => '',
-          'points' => 1,
-      ),
-      array('%d','%d','%s','%f') 
-  );
+         $rows_affected = $wpdb->insert
+         (
+            'wp_Link_Bike_User_Event',
+            array(
+               'userid' => $current_userID,
+               'eventid' => $current_eventID,
+               'text' => '',
+               'points' => 1,
+            ),
+            array('%d','%d','%s','%f') 
+         );
 
-   if($vote === false) {
-      $result['type'] = "error";
-      $result['vote_count'] = $vote_count;
+         if($vote === false) {
+            $result['type'] = "error";
+            $result['vote_count'] = $vote_count;
+         }
+         else {
+            $result['type'] = "success";
+            $result['vote_count'] = $new_vote_count;
+         }
+
+         if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            $result = json_encode($result);
+            echo $result;
+         }
+         else {
+            header("Location: ".$_SERVER["HTTP_REFERER"]);
+         }
+      }
+      else // probably something wrong with the paramter IDs
+      {
+         die();
+      }
    }
-   else {
-      $result['type'] = "success";
-      $result['vote_count'] = $new_vote_count;
+   else // userid not from logged in user and not admin
+   {
+      //echo "Hu?";
+      die();
    }
 
-   if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-      $result = json_encode($result);
-      echo $result;
-   }
-   else {
-      header("Location: ".$_SERVER["HTTP_REFERER"]);
-   }
-
-   die();
+die();
 
 }
 
@@ -146,40 +164,39 @@ function tb_removeme_tour() {
    if ( !wp_verify_nonce( $_REQUEST['nonce'], "tb_removeme_tour_nonce")) {
       exit("So kommst Du hier nicht raus!");
    }   
-   $current_eventID = $_REQUEST["post_id"];
-   $current_userID = $_REQUEST["tbuser"];
+   $current_eventID = esc_attr($_REQUEST["post_id"]);
+   $current_userID = esc_attr($_REQUEST["tbuser"]);
+   $check_userID = get_current_user_id();
 
-   $sql_delete_query = "DELETE FROM wp_Link_Bike_User_Event WHERE (userid='". $current_userID ."' AND eventid ='". $current_eventID ."')";
-   
-   $wpdb->query(
-      $wpdb->prepare($sql_delete_query)
-      );
-
+   // check, if current user has the same ID like in the parameter or is an admin
+   if(($current_userID == $check_userID) OR current_user_can('manage_options'))
+   {
+      // check, if the IDs are numeric
+      if(is_numeric($current_eventID) AND is_numeric($current_userID))
+      {
+         $sql_delete_query = "DELETE FROM wp_Link_Bike_User_Event WHERE (userid='". $current_userID ."' AND eventid ='". $current_eventID ."')";
+         
+         $wpdb->query(
+            $wpdb->prepare($sql_delete_query)
+            );
+      }
+      else // probably some wrong values in the parameters
+      {
+         die();
+      }
+   }
+   else // non-admin or not current user
+   {
+      die();
+   }
    header("Location: ".$_SERVER["HTTP_REFERER"]);
-
-   // if($vote === false) {
-   //    $result['type'] = "error";
-   //    $result['vote_count'] = $vote_count;
-   // }
-   // else {
-   //    $result['type'] = "success";
-   //    $result['vote_count'] = $new_vote_count;
-   // }
-
-   // if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-   //    $result = json_encode($result);
-   //    echo $result;
-   // }
-   // else {
-   //    header("Location: ".$_SERVER["HTTP_REFERER"]);
-   // }
 
    die();
 
 }
 
 function must_login_first() {
-   echo "You must log in to vote";
+   echo "You must log in to interact on this website!";
    die();
 }
 
