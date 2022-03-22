@@ -82,7 +82,7 @@
             if ($i<0)
             {
                 echo "<tr>"; //<th>Event</th>
-                echo "<th>Person</th><th>Bike</th><th>Punkte</th></tr>\n";
+                echo '<th width="42px"></th><th>Person</th><th>Bike</th><th>Punkte</th></tr>';
             }
             else
             {
@@ -103,7 +103,7 @@
                 // get user's name:
                 if ($tbfirstname == '')
                     $tbfirstname = get_user_meta($tbuser_id, 'nickname', true);
-                echo "<td>";
+                echo '<td align="center">';
                 if ($userAlreadyExistshere || $tbadmin)
                 {
                     $nonce_rm = wp_create_nonce("tb_removeme_tour_nonce");
@@ -111,7 +111,7 @@
                     echo '<a class="remove_user" data-nonce="' . $nonce_rm . '" data-post_id="' . $post->ID . '" tbuser="' . $tbuser_id.'"';
                     echo ' href="' . $link . '"><img src="/wp-content/plugins/tallbike-crew/pictures/x.png" width="14" title="doch nicht dabei"></a>&nbsp;';
                 }
-                echo $tbfirstname . "</td>";
+                echo '</td><td>' . $tbfirstname . '</td>';
                 // get bike's name:
                 if ($tbbike_id == 0)
                     { $tbbike_name = "fehlt noch!"; }
