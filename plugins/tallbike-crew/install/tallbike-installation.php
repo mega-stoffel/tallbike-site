@@ -36,8 +36,9 @@ function tbBikes_setup_post_type() {
         'public'      => true,
         'has_archive' => true,
         'menu_position' => 6,
-        'supports' => ['title', 'editor' , 'author', 'custom-fields','thumbnail','page-attributes','post-formats,'],
-        'rewrite'     => array( 'slug' => 'bikes' ), 
+        'supports' => ['title','editor','author','custom-fields','thumbnail','page-attributes','post-formats'],
+        'rewrite' => array( 'slug' => 'bikes'), 
+        'publicly_queryable' => true,
         'delete_with_user' => false,
         //this is the important line for the entries in the Block Editor!
         'show_in_rest' => true,
@@ -66,8 +67,9 @@ function tbEvents_setup_post_type() {
         'public'      => true,
         'has_archive' => true,
         'menu_position' => 5,
-        'supports' => ['title', 'editor' ,'author', 'comments', 'custom-fields','thumbnail','page-attributes','post-formats,'],
-        'rewrite'     => array( 'slug' => 'events' ), 
+        'supports' => ['title', 'editor','author','comments','custom-fields','thumbnail','page-attributes','post-formats'],
+        'rewrite' => array('slug' => 'events'),
+        'publicly_queryable' => true,
         'delete_with_user' => false,
         'show_in_rest' => true,
     );
