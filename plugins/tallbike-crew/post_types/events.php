@@ -2,10 +2,10 @@
 /**
 * Registriert den Post Type "events"
 */
-function register_product_post_type() {
+function register_events_post_type() {
     // Hier wird der Post Type registriert
 }
-add_action( 'init', 'register_product_post_type' );
+add_action( 'init', 'register_events_post_type' );
 
 /*
 $labels = array(
