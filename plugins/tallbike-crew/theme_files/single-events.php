@@ -14,7 +14,8 @@
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-
+<div class="entry-content">
+    
 <?php
 
         //getting the event's date and time:
@@ -25,17 +26,28 @@
         $eventDate = date("d.m.Y",$eventDateFormatted);
         $eventTime = date("H:i",$eventDateFormatted);
         //echo $eventDate . " and also " . $eventTime;
+        $tbadmin = false;
+        $tbeditor = false;
+
+        if( is_user_logged_in() )
+        {
+            $tbuser = wp_get_current_user(); // getting & setting the current user 
+            $tbroles = ( array ) $tbuser->roles;
+            foreach ($tbroles as $tbrole)
+            {
+                switch ($tbrole) {
+                    case "administrator":
+                        $tbadmin = true;
+                        break;
+                    case "editor":
+                        $tbeditor = true;
+                        break;
+                    }
+            }
+        }
 
         $current_eventID=get_the_ID();
-    /*
-	<header class="entry-header alignwide">
-		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
-		<?php twenty_twenty_one_post_thumbnail(); ?>
-	</header><!-- .entry-header --> */
-?>
 
-	<div class="entry-content">
-    <?php
         $eventTitle = esc_html(get_the_title());
         echo "<p><h2>" . $eventTitle ."</h2></p>";
         //echo the_title('<h4 class="entry-title">','</h4>');
@@ -59,6 +71,7 @@
         $BUE_results = $wpdb->get_results("SELECT * FROM " . $tablelinkBUE_name . " WHERE eventid = ". esc_sql($current_eventID) ." ORDER BY RAND()"); 
         $BUE_counter = count($BUE_results);
         $userAlreadyExistshere = false;
+        $userIsInList = false;
 
         // $all_meta_for_user = get_user_meta(1);
         // print_r( $all_meta_for_user ) . "<br>";
@@ -69,7 +82,7 @@
             if ($i<0)
             {
                 echo "<tr>"; //<th>Event</th>
-                echo "<th>Person</th><th>Bike</th><th>Punkte</th></tr>\n";
+                echo '<th width="42px"></th><th>Person</th><th>Bike</th><th>Punkte</th></tr>';
             }
             else
             {
@@ -80,12 +93,25 @@
                 if ($current_tbuser == $tbuser_id)
                 {
                     $userAlreadyExistshere = true;
+                    $userIsInList = true;
+                }
+                else
+                {
+                    $userAlreadyExistshere = false;
                 }
                 $tbfirstname = get_user_meta($tbuser_id, 'first_name', true);
                 // get user's name:
                 if ($tbfirstname == '')
                     $tbfirstname = get_user_meta($tbuser_id, 'nickname', true);
-                echo "<td>" . $tbfirstname . "</td>";
+                echo '<td align="center">';
+                if ($userAlreadyExistshere || $tbadmin)
+                {
+                    $nonce_rm = wp_create_nonce("tb_removeme_tour_nonce");
+                    $link = admin_url('admin-ajax.php?action=tb_removeme_tour&post_id='.$post->ID.'&tbuser='.$tbuser_id.'&nonce='.$nonce_rm);
+                    echo '<a class="remove_user" data-nonce="' . $nonce_rm . '" data-post_id="' . $post->ID . '" tbuser="' . $tbuser_id.'"';
+                    echo ' href="' . $link . '"><img src="/wp-content/plugins/tallbike-crew/pictures/x.png" width="14" title="doch nicht dabei"></a>&nbsp;';
+                }
+                echo '</td><td>' . $tbfirstname . '</td>';
                 // get bike's name:
                 if ($tbbike_id == 0)
                     { $tbbike_name = "fehlt noch!"; }
@@ -103,22 +129,9 @@
         //Alternative: if (get_current_user_id() > 0)
         if( is_user_logged_in() )
         {
-            $tbuser = wp_get_current_user(); // getting & setting the current user 
-	        $tbadmin = false;
-            $tbroles = ( array ) $tbuser->roles;
-            foreach ($tbroles as $tbrole)
-            {
-                if ($tbrole == "administrator" || $tbrole == "editor")
-                {
-                    $tbadmin = true;
-                    break;
-                }
-                //if tbadmin: show list of users
-                //echo $tbrole . " for my user. And tbadmin: " . var_dump($tbadmin) . "<br>";
-            }
-            
             // Eintragen-Link nicht anzeigen, wenn schon bei der Tour dabei:
-            if ($userAlreadyExistshere != true)
+            //if ($userAlreadyExistshere != true)
+            if ($userIsInList != true)
             {
                 $nonce = wp_create_nonce("tb_addme_tour_nonce");
                 $link = admin_url('admin-ajax.php?action=tb_addme_tour&post_id='.$post->ID.'&tbuser='.$current_tbuser.'&nonce='.$nonce);
@@ -127,7 +140,7 @@
             }
         }
         else {
-            echo "Falls Du dabei warst, meld dich doch an und trage dich in die Liste ein!";
+            echo "Falls Du dabei warst, <a href=\"/wp-admin\">meld dich doch an</a> und trage dich in die Liste ein!";
         }
         echo "</p>";
 		// -------------------------------------
@@ -207,12 +220,6 @@
     ?>
 	</div><!-- .entry-content -->
 
-	<footer class="entry-footer default-max-width">
-		<?php twenty_twenty_one_entry_meta_footer(); ?>
-	</footer><!-- .entry-footer -->
-
-	<?php if ( ! is_singular( 'attachment' ) ) : ?>
-		<?php get_template_part( 'template-parts/post/author-bio' ); ?>
-	<?php endif; ?>
-
 </article>
+
+<?php get_footer();

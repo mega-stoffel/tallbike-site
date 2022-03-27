@@ -3,7 +3,7 @@
 Plugin Name:  Tallbike-Crew
 Plugin URI:   https://github.com/mega-stoffel/tallbike-site
 Description:  Adding Bikes and Events to Wordpress and connecting them with the existing Users.
-Version:      0.2
+Version:      0.3
 Author:       X-tof Hoyer
 Author URI:   https://tallbike-stuttgart.de
 */
@@ -87,10 +87,12 @@ include "install/tallbike-installation.php";
 include "libs/add_shortcodes.php";
 
 // -----------------------------------------------------
-// Some working AJAX !
+// Some working AJAX! Na, well, ähm, so - it's working, yeah. But thats everything. No AJAX at all!
 // -----------------------------------------------------
 add_action("wp_ajax_tb_addme_tour", "tb_addme_tour");
-//add_action("wp_ajax_nopriv_my_user_vote", "my_must_login");
+//add_action("wp_ajax_nopriv_tb_addme_tour", "must_login_first");
+add_action("wp_ajax_tb_removeme_tour", "tb_removeme_tour");
+//add_action("wp_ajax_nopriv_tb_removeme_tour", "must_login_first");
 
 function tb_addme_tour() {
 
@@ -99,46 +101,102 @@ function tb_addme_tour() {
    if ( !wp_verify_nonce( $_REQUEST['nonce'], "tb_addme_tour_nonce")) {
       exit("So wird das nix!");
    }   
-   $current_eventID = $_REQUEST["post_id"];
-   $current_userID = $_REQUEST["tbuser"];
+   $current_eventID = esc_attr($_REQUEST["post_id"]);
+   $current_userID = esc_attr($_REQUEST["tbuser"]);
+   $check_userID = get_current_user_id();
 
-   //$addme = update_post_meta($_REQUEST["post_id"], "events_cf_Length", $new_vote_count);
+   // check, if current user has the same ID like in the parameter or is an admin
+   if(($current_userID == $check_userID) OR current_user_can('manage_options'))
+   {
+      // check, if the IDs are numeric
+      if (is_numeric($current_eventID) AND is_numeric($current_userID))
+      {
+         //$addme = update_post_meta($_REQUEST["post_id"], "events_cf_Length", $new_vote_count);
 
-   $rows_affected = $wpdb->insert
-   (
-      'wp_Link_Bike_User_Event',
-      array(
-          'userid' => $current_userID,
-          'eventid' => $current_eventID,
-          'text' => '',
-          'points' => 1,
-      ),
-      array('%d','%d','%s','%f') 
-  );
+         $rows_affected = $wpdb->insert
+         (
+            'wp_Link_Bike_User_Event',
+            array(
+               'userid' => $current_userID,
+               'eventid' => $current_eventID,
+               'text' => '',
+               'points' => 1,
+            ),
+            array('%d','%d','%s','%f') 
+         );
 
-   if($vote === false) {
-      $result['type'] = "error";
-      $result['vote_count'] = $vote_count;
+         if($vote === false) {
+            $result['type'] = "error";
+            $result['vote_count'] = $vote_count;
+         }
+         else {
+            $result['type'] = "success";
+            $result['vote_count'] = $new_vote_count;
+         }
+
+         if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+            $result = json_encode($result);
+            echo $result;
+         }
+         else {
+            header("Location: ".$_SERVER["HTTP_REFERER"]);
+         }
+      }
+      else // probably something wrong with the paramter IDs
+      {
+         die();
+      }
    }
-   else {
-      $result['type'] = "success";
-      $result['vote_count'] = $new_vote_count;
+   else // userid not from logged in user and not admin
+   {
+      //echo "Hu?";
+      die();
    }
 
-   if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-      $result = json_encode($result);
-      echo $result;
+die();
+
+}
+
+function tb_removeme_tour() {
+
+   global $wpdb;
+
+   if ( !wp_verify_nonce( $_REQUEST['nonce'], "tb_removeme_tour_nonce")) {
+      exit("So kommst Du hier nicht raus!");
+   }   
+   $current_eventID = esc_attr($_REQUEST["post_id"]);
+   $current_userID = esc_attr($_REQUEST["tbuser"]);
+   $check_userID = get_current_user_id();
+
+   // check, if current user has the same ID like in the parameter or is an admin
+   if(($current_userID == $check_userID) OR current_user_can('manage_options'))
+   {
+      // check, if the IDs are numeric
+      if(is_numeric($current_eventID) AND is_numeric($current_userID))
+      {
+         $sql_delete_query = "DELETE FROM wp_Link_Bike_User_Event WHERE (userid='". $current_userID ."' AND eventid ='". $current_eventID ."')";
+         
+         $wpdb->query(
+            $wpdb->prepare($sql_delete_query)
+            );
+      }
+      else // probably some wrong values in the parameters
+      {
+         die();
+      }
    }
-   else {
-      header("Location: ".$_SERVER["HTTP_REFERER"]);
+   else // non-admin or not current user
+   {
+      die();
    }
+   header("Location: ".$_SERVER["HTTP_REFERER"]);
 
    die();
 
 }
 
-function my_must_login() {
-   echo "You must log in to vote";
+function must_login_first() {
+   echo "You must log in to interact on this website!";
    die();
 }
 
@@ -148,6 +206,41 @@ function my_must_login() {
 require_once( 'libs/tb-shortcodes.php' );
 add_shortcode('tb_kommendeTouren', 'tb_future_events');
 add_shortcode('tb_vergangeneTouren', 'tb_previous_events');
+add_shortcode('tb_all_users', 'tb_all_users');
+
+// -----------------------------------
+//     P A G E T E M P L A T E S
+// -----------------------------------
+//require_once( 'libs/tb-pagetemplates.php' );
+
+// load templates name in page attributes
+function tb_users_add_template ($templates)
+{
+   // the template php file = the template name
+   $templates['tb_usersshow.php'] = 'Tallbike Menschen';
+   return $templates;
+}
+//add_filter ('theme_page_templates', 'tb_users_add_template');
+
+function tb_users_load_template( $tb_template )
+{
+   if(  get_page_template_slug() === 'tb_usersshow.php' )
+   {
+      if ( $theme_file = locate_template( array( 'tb_usersshow.php' )))
+      {
+         $tb_template = $theme_file;
+      }
+      else
+      {
+         $tb_template = plugin_dir_path( __DIR__ ) . 'templates/tb_usersshow.php';
+      }
+   }
+   if($tb_template == '') {
+       throw new \Exception('No template found');
+   }
+   return $tb_template;
+}
+//add_filter ('page_templates', 'tb_users_load_template');
 
 
 // ---------------------------------

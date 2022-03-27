@@ -176,6 +176,19 @@ function tbSQL_setup () {
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
     dbDelta( $sql_link_bike_user_event );
 
+    // $tableUserextend_name = $wpdb->prefix . "Users_Extend"; 
+
+    // $sql_link_user_extend = "CREATE TABLE $tableUserextend_name (
+    //     id mediumint(9) NOT NULL AUTO_INCREMENT,
+    //     userid mediumint(9) NOT NULL,
+    //     visible boolean NOT NULL,
+    //     PRIMARY KEY (id)
+    // ) $charset_collate;";
+
+    // //require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+    // dbDelta( $sql_link_user_extend );
+
+
     //$tablebikes_name = $wpdb->prefix . "Bikes"; 
     //$tableevents_name = $wpdb->prefix . "Events"; 
     //$tablebadges_name = $wpdb->prefix . "Badges"; 
