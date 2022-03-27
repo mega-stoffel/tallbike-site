@@ -32,6 +32,7 @@ $tbtoday = date('Y-m-d');
 // all previous events:
 $queryArgs_past = array(
 	'post_type'	=> 'events',
+    'posts_per_page' => 25,
     'order'     => 'DESC',
     'meta_key'  => 'events_cf_Date',
     'orderby'   => 'events_cf_Date',
