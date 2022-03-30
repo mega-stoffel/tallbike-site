@@ -18,33 +18,65 @@
 // Vorbild:
 // https://artisansweb.net/how-to-use-jquery-ajax-wordpress/
 
-jQuery(function($) {
-    alert "test!"
-    $('body').on('change', '.bike-id', function() {
-        alert "test!"
-        var countryid = $(this).val();
-        if(countryid != '') {
-            var data = {
-                'action': 'show_points_form_ajax',
-                'country': countryid,
-                'security': blog.security
-            }
-  
-            $.post(blog.ajaxurl, data, function(response) {
-                 $('.load_points_form').html(response);
-            });
-        }
-    });
+// jQuery(document).ready(function () {
+//     jQuery( "selecto" ).change(function () {
+//     alert( "Handler for .change() called." ); 
+//     var str = "";
+//     jQuery( "select option:selected" ).each(function() {
+//       str += $( this ).text() + " ";
+//     });
+//     jQuery( "div" ).text( str );
+//   })
+//   .change();
+// });
+
+jQuery( ".bike-id" ).change(function() {
+    alert( "Handler for .change() called." );
+    var str = "1";
+    str += str;
+
+    jQuery.post(blog.ajaxurl, data, function(response) {
+        //                  $('.load_points_form').html(response);
+        //             }
+   // var data = {
+    //         'action': 'show_points_form_ajax',
+    //         //'country': countryid,
+    //         'security': blog.security
+    //     }
+
+    //     jQuery.post(blog.ajaxurl, data, function(response) {
+    //             jQuery('.load_points_form').html(response);
+    //     });
+    // jQuery( "load-points-form" ).text( str );
+  });
 });
 
-jQuery.ajax(
-    alert "test123"
-    {
-    type: "POST",
-    url: "/wp-admin/admin-ajax.php",
-    data: "1234",
-    action: 'show_points_form_ajax',
-    success: function(data) {
-      jQuery("#load_points_form").html(data);
-    }
-  });
+// jQuery(function($) {
+//     alert ("test!");
+//     $('body').on('change', '.bike-id', function() {
+//         alert ("test!");
+//         var countryid = $(this).val();
+//         if(countryid != '') {
+//             var data = {
+//                 'action': 'show_points_form_ajax',
+//                 'country': countryid,
+//                 'security': blog.security
+//             }
+  
+//             $.post(blog.ajaxurl, data, function(response) {
+//                  $('.load_points_form').html(response);
+//             });
+//         }
+//     });
+// });
+
+// jQuery.ajax(
+//     {
+//     type: "POST",
+//     url: "/wp-admin/admin-ajax.php",
+//     data: "1234",
+//     action: 'show_points_form_ajax',
+//     success: function(data) {
+//       jQuery("#load_points_form").html(data);
+//     }
+//   });
