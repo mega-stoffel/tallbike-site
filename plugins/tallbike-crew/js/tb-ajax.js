@@ -31,11 +31,24 @@
 // });
 
 jQuery( ".bike-id" ).change(function() {
-    alert( "Handler for .change() called." );
+    alert( "Handler for .change() called: " + blog.ajaxurl );
     var str = "1";
     str += str;
 
-    jQuery.post(blog.ajaxurl, data, function(response) {
+    jQuery.ajax({
+        url : blog.ajaxurl,
+        type : 'post',
+        data : {
+            action : 'show_points_form_ajax',
+            bike_id : 5
+        },
+        success : function( response ) {
+            jQuery(".load_points_form").html(response);
+        }
+        });
+    });
+
+    //jQuery.post(blog.ajaxurl, data, function(response) {
         //                  $('.load_points_form').html(response);
         //             }
    // var data = {
@@ -48,8 +61,8 @@ jQuery( ".bike-id" ).change(function() {
     //             jQuery('.load_points_form').html(response);
     //     });
     // jQuery( "load-points-form" ).text( str );
-  });
-});
+  //});
+//});
 
 // jQuery(function($) {
 //     alert ("test!");

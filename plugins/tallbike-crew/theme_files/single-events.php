@@ -148,7 +148,7 @@
 
                         echo "</select>";
                         echo "</div>";
-                        echo "<div class=\"load-points-form\"></div>";
+                        echo "<div class=\"load-points-form\">outputs</div>";
                         echo "</td>";
                         //echo "<td>" . $tbbike_name . "</td>";
                     }
