@@ -1,9 +1,8 @@
 <?php
 
-// I got this basic information from this page:
-// https://www.inkthemes.com/learn-how-to-create-shortcodes-in-wordpress-plugin-with-examples/
-// remember the include in the startpage.php
-
+//
+// remember to include the function-name in the startpage.php
+//
 
 # # # # # # # # # # # # # # #
 # Function: Future Events
@@ -297,24 +296,68 @@ function tb_random_image()
             'post_type' => 'attachment',
             'post_status' => 'any',
             'orderby' => 'rand', // select image by random.
-            'posts_per_page' => 1,
-            'post_mime_type' => array('image/jpeg', 'image/jpg')
+            'posts_per_page' => 10,
+            'post_mime_type' => array('image/jpg', 'image/jpeg')
         );
     
         $tb_randImage = "<br><h3>zuf&auml;lliges Bild</h3><br>";
     
-        $tb_image_query = new WP_Query( $queryArgsImage ); 
+        $tb_images = get_posts($queryArgsImage);
+
+        //$tb_images_query = new WP_Query($queryArgsImage);
     
-        if ($tb_image_query->have_posts())
+        foreach ($tb_images as $tb_image)
+        {
+            $image_link = wp_get_attachment_url($tb_image->ID); // random image link.
+            //$image_title = $tb_image->post_title; // random image title, you can remove it, not important.
+            //$image_caption = $tb_image->post_excerpt; // random image caption, you can remove it, not important.
+            $tb_randImage .= '<p><img src="'.$image_link.'"></p>'; // display random image        
+
+        }
+
+        /*$tb_randImage .= "<br><h3>zuf&auml;lliges Bild 2</h3><br>";
+        $tb_random_query_events = new WP_Query( 
+            array( 
+              'post_type' => 'events', 
+              'posts_per_page' => -1,
+              'orderby' => 'rand',
+              'fields' => 'ids'
+            ) 
+          );
+          $tb_image_query = new WP_Query( 
+            array( 
+              'post_type' => 'attachment', 
+              'post_status' => 'inherit', 
+              'post_mime_type' => 'image', 
+              'posts_per_page' => 1, 
+              'post_parent__in' => $tb_random_query_events->posts, 
+              'order' => 'rand' 
+            ) 
+          );
+          //doesn't seem to get into this if and while. :-/
+          if($tb_image_query->have_posts())
+          {
+            $tb_randImage .= "im if";
+            while( $tb_image_query->have_posts() ) {
+                $tb_randImage .= "im while";
+                $tb_image_query->the_post();
+                $imgurl = wp_get_attachment_url( get_the_ID() );
+                
+                $tb_randImage .= '<p><img src="'.$imgurl.'"></p>';
+            }
+          }
+        */
+
+        /*if ($tb_image_query->have_posts())
         {
             while ($tb_image_query->have_posts())
             {
-                $tb_image_query->the_post();
+                $image = $tb_image_query->the_post();
                 
                 //$current_eventDate = date('d.M.Y', $current_eventtimestamp);
-                $tb_randImage .=  '<li><h4>'. get_the_title() . '</h4>';
-                $tb_randImage .=  "Wann? " . $current_eventDate . " um " . $current_eventTime ." Uhr<br>";
-                $tb_randImage .=  "Wo? " . esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) ) . "</li>";
+                //$tb_randImage .=  '<li><h4>'. get_the_title() . '</h4>';
+                //$tb_randImage .=  "Wann? " . $current_eventDate . " um " . $current_eventTime ." Uhr<br>";
+                //$tb_randImage .=  "Wo? " . esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) ) . "</li>";
 
                 $image_link = wp_get_attachment_url($image->ID); // random image link.
                 $image_title = $image->post_title; // random image title, you can remove it, not important.
@@ -325,7 +368,7 @@ function tb_random_image()
         else
         {
             $tb_randImage = "<p>kein Bild gefunden</p>";
-        }
+        }*/
 
         /* Restore original Post Data */
         wp_reset_postdata();
@@ -333,5 +376,7 @@ function tb_random_image()
         return $tb_randImage;
     }
 
+// I got this basic information from this page:
+// https://www.inkthemes.com/learn-how-to-create-shortcodes-in-wordpress-plugin-with-examples/
 
 ?>
