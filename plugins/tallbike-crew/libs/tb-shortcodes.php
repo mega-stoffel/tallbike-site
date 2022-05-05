@@ -296,7 +296,7 @@ function tb_random_image()
             'post_type' => 'attachment',
             'post_status' => 'any',
             'orderby' => 'rand', // select image by random.
-            'posts_per_page' => 10,
+            'posts_per_page' => 1,
             'post_mime_type' => array('image/jpg', 'image/jpeg')
         );
     
