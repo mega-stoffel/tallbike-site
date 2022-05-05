@@ -4,6 +4,11 @@
 // https://www.inkthemes.com/learn-how-to-create-shortcodes-in-wordpress-plugin-with-examples/
 // remember the include in the startpage.php
 
+
+# # # # # # # # # # # # # # #
+# Function: Future Events
+# # # # # # # # # # # # # # #
+
 function tb_future_events(){
 
 // the next event is shown until 01:00 of the next day, probably some UTC stuff.
@@ -62,6 +67,10 @@ function tb_future_events(){
     return $tb_futureevents;    
     }
 
+# # # # # # # # # # # # # # #
+# Function: Previous Events
+# # # # # # # # # # # # # # #
+
 function tb_previous_events(){
 
 wp_reset_postdata();
@@ -116,6 +125,10 @@ wp_reset_postdata();
 //$output = "<p>Hello, This is your another shortcode!</p>"; 
 return $tb_previousevents;    
 }
+
+# # # # # # # # # # # # # # #
+# Function: All Users
+# # # # # # # # # # # # # # #
 
 function tb_all_users(){
     
@@ -269,5 +282,56 @@ function tb_all_users(){
 
     return $tb_ourUsers;    
     }    
+
+# # # # # # # # # # # # # # #
+# Function: Random Image
+# # # # # # # # # # # # # # #
+
+function tb_random_image()
+    {
+        wp_reset_postdata();
+    
+        // Query Definition, especially for meta values and their comparision
+        // https://developer.wordpress.org/reference/classes/wp_query/
+        $queryArgsImage = array(
+            'post_type' => 'attachment',
+            'post_status' => 'any',
+            'orderby' => 'rand', // select image by random.
+            'posts_per_page' => 1,
+            'post_mime_type' => array('image/jpeg', 'image/jpg')
+        );
+    
+        $tb_randImage = "<br><h3>zuf&auml;lliges Bild</h3><br>";
+    
+        $tb_image_query = new WP_Query( $queryArgsImage ); 
+    
+        if ($tb_image_query->have_posts())
+        {
+            while ($tb_image_query->have_posts())
+            {
+                $tb_image_query->the_post();
+                
+                //$current_eventDate = date('d.M.Y', $current_eventtimestamp);
+                $tb_randImage .=  '<li><h4>'. get_the_title() . '</h4>';
+                $tb_randImage .=  "Wann? " . $current_eventDate . " um " . $current_eventTime ." Uhr<br>";
+                $tb_randImage .=  "Wo? " . esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) ) . "</li>";
+
+                $image_link = wp_get_attachment_url($image->ID); // random image link.
+                $image_title = $image->post_title; // random image title, you can remove it, not important.
+                $image_caption = $image->post_excerpt; // random image caption, you can remove it, not important.
+                //echo '<p><img src="'.$image_link.'" title="'.$image_title.'" alt="'.$image_caption.'"></p>'; // display random image        
+            }
+        } 
+        else
+        {
+            $tb_randImage = "<p>kein Bild gefunden</p>";
+        }
+
+        /* Restore original Post Data */
+        wp_reset_postdata();
+    
+        return $tb_randImage;
+    }
+
 
 ?>
