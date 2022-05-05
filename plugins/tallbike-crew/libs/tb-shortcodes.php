@@ -300,7 +300,7 @@ function tb_random_image()
             'post_mime_type' => array('image/jpg', 'image/jpeg')
         );
     
-        $tb_randImage = "<br><h3>zuf&auml;lliges Bild</h3><br>";
+        $tb_randImage = "<h3>zuf&auml;lliges Bild</h3>";
     
         $tb_images = get_posts($queryArgsImage);
 
@@ -311,7 +311,7 @@ function tb_random_image()
             $image_link = wp_get_attachment_url($tb_image->ID); // random image link.
             //$image_title = $tb_image->post_title; // random image title, you can remove it, not important.
             //$image_caption = $tb_image->post_excerpt; // random image caption, you can remove it, not important.
-            $tb_randImage .= '<p><img src="'.$image_link.'"></p>'; // display random image        
+            $tb_randImage .= '<img src="'.$image_link.'">'; // display random image        
 
         }
 
