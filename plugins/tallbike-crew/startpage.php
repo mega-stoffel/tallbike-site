@@ -207,6 +207,7 @@ require_once( 'libs/tb-shortcodes.php' );
 add_shortcode('tb_kommendeTouren', 'tb_future_events');
 add_shortcode('tb_vergangeneTouren', 'tb_previous_events');
 add_shortcode('tb_all_users', 'tb_all_users');
+add_shortcode('tb_random_image', 'tb_random_image');
 
 // -----------------------------------
 //     P A G E T E M P L A T E S
