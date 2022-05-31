@@ -31,22 +31,46 @@
 // });
 
 jQuery( ".bike-id" ).change(function() {
-    alert( "Handler for .change() called: " + blog.ajaxurl );
+    //alert( "Händler for .change() called: " + blog.ajaxurl); // + ajax_object.ajax_url + "..." + blog.ajaxurl);
     var str = "1";
-    str += str;
+    //str += str;
+    alert( "str:" + str);
+    var data = {
+        'action': 'show_points_form_ajax',
+        'bike_id': 5
+        //'whatever': ajax_object.we_value      // We pass php values differently!
+    };
+    //jQuery(".load_points_form").html(response);
 
-    jQuery.ajax({
-        url : blog.ajaxurl,
-        type : 'post',
-        data : {
-            action : 'show_points_form_ajax',
-            bike_id : 5
-        },
-        success : function( response ) {
-            jQuery(".load_points_form").html(response);
-        }
-        });
+    jQuery.post(blog.ajaxurl, data, function(response)
+    {
+        alert('Got this from the server: ' + response);
     });
+});
+
+    // jQuery.ajax({
+    //     url : blog.ajaxurl,
+    //     type : 'post',
+    //     data : {
+    //         action : 'show_points_form_ajax',
+    //         bike_id : 5
+    //     },
+    //     success : function( response ) {
+    //         jQuery(".load_points_form").html(response);
+    //     }
+    //     });
+    // });
+
+    // jQuery(document).ready(function($) {
+    //     var data = {
+    //         'action': 'my_action',
+    //         'whatever': ajax_object.we_value      // We pass php values differently!
+    //     };
+    //     // We can also pass the url value separately from ajaxurl for front end AJAX implementations
+    //     jQuery.post(ajax_object.ajax_url, data, function(response) {
+    //         alert('Got this from the server: ' + response);
+    //     });
+    // });
 
     //jQuery.post(blog.ajaxurl, data, function(response) {
         //                  $('.load_points_form').html(response);

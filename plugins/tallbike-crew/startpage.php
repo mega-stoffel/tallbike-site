@@ -267,9 +267,21 @@ add_action( 'wp_enqueue_scripts', 'tb_blog_scripts' );
 add_action('wp_ajax_show_points_form_ajax', 'show_points_form_ajax');
 
 function show_points_form_ajax() {
-   return "hier!";
+   return 1;
+   //return "hier!";
    check_ajax_referer('load_points_form', 'security');
    echo "some output!";
+   wp_die();
+}
+
+add_action('wp_ajax_t4_ajaxcall', 't4_ajaxcall');
+
+function t4_ajaxcall()
+{
+   echo 'Ajax Call out';
+   echo '<pre>';
+   var_dump($_POST);
+   echo '</pre>';
    wp_die();
 }
 

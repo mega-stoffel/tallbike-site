@@ -149,8 +149,17 @@
                         echo "</select>";
                         echo "</div>";
                         echo "<div class=\"load-points-form\">outputs</div>";
-                        echo "</td>";
                         //echo "<td>" . $tbbike_name . "</td>";
+                        
+                        
+                        // Versuch mit dem Button:
+                        // YEAH - der ruft das JS ganz unten auf!
+                        echo '<div id="receiving_div_id">';
+                        echo "<p>Nothing loaded yet</p>";
+                        echo "</div>";
+                        echo '<button id="button_to_load_data">Get Ajax Content</button>';
+                        echo "</td>";
+
                     }
                 }
                 else
@@ -261,4 +270,20 @@
 
 </article>
 
-<?php get_footer();
+<?php get_footer();?>
+
+
+<script type="text/javascript" >
+jQuery("#button_to_load_data").click(function() {
+
+   var data = {
+      'action'   : 't4_ajaxcall', // the name of your PHP function!
+      'function' : 'show_files',    // a random value we'd like to pass
+      'fileid'   : '7'              // another random value we'd like to pass
+      };
+    
+   jQuery.post(blog.ajaxurl, data, function(response) {
+      jQuery("#receiving_div_id").html(response);
+   });
+});
+</script>
