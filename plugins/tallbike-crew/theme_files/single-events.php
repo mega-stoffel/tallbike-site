@@ -148,16 +148,15 @@
 
                         echo "</select>";
                         echo "</div>";
-                        echo "<div class=\"load-points-form\">outputs</div>";
+                        echo "<div class=\"load-points-form\">";
+                        echo "</div>";
                         //echo "<td>" . $tbbike_name . "</td>";
-                        
                         
                         // Versuch mit dem Button:
                         // YEAH - der ruft das JS ganz unten auf!
                         echo '<div id="receiving_div_id">';
-                        echo "<p>Nothing loaded yet</p>";
-                        echo "</div>";
                         echo '<button id="button_to_load_data">Get Ajax Content</button>';
+                        echo "</div>";
                         echo "</td>";
 
                     }

@@ -278,9 +278,15 @@ add_action('wp_ajax_t4_ajaxcall', 't4_ajaxcall');
 
 function t4_ajaxcall()
 {
-   echo 'Ajax Call out';
    echo '<pre>';
-   var_dump($_POST);
+   echo 'Bonuspunkte Fahrman&ouml;ver: <input type=\"number\"><br>';
+   echo 'Bonuspunkte Musik: <input type=\"number\"><br>';
+   echo 'Bonuspunkte Getr&auml;nke: <input type=\"number\"><br>';
+   echo 'Bonuspunkte Verkleidung: <input type=\"number\"><br>';
+   echo 'Bonuspunkte <input type=\"text\"> <input type=\"number\"><br>';
+   echo 'Bonuspunkte k&ouml;nnen jede ganze Zahl sein.<br>';
+   //var_dump($_POST);
+   echo '<button id="enterBike">eintragen</button>';
    echo '</pre>';
    wp_die();
 }
