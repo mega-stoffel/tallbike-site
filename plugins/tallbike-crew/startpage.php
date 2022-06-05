@@ -274,9 +274,9 @@ function show_points_form_ajax() {
    wp_die();
 }
 
-add_action('wp_ajax_t4_ajaxcall', 't4_ajaxcall');
+add_action('wp_ajax_tb_ajax_addbike', 'tb_ajax_addbike');
 
-function t4_ajaxcall()
+function tb_ajax_addbike()
 {
    echo '<pre>';
    echo 'Bonuspunkte Fahrman&ouml;ver: <input type=\"number\"><br>';

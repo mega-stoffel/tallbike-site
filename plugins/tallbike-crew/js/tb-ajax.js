@@ -30,7 +30,7 @@
 //   .change();
 // });
 
-jQuery( ".bike-id" ).change(function() {
+jQuery( ".--bike-id" ).change(function() {
     //alert( "Händler for .change() called: " + blog.ajaxurl); // + ajax_object.ajax_url + "..." + blog.ajaxurl);
     var str = "1";
     //str += str;

@@ -111,12 +111,15 @@
                 }
                 echo $tbfirstname . "</td>";
                 // get bike's name or enter new one
-                if ($tbbike_id == 0 || $userAlreadyExistshere || $tbadmin)
+                //if ($tbbike_id == 0 || $userAlreadyExistshere || $tbadmin)
+                if ($userAlreadyExistshere || $tbadmin)
                 {
                     //$tbbike_name = get_the_title($BUE_results[$i]->bikeid);
 
                     wp_reset_postdata();
-
+                    
+                    // needs to get out of this for-loop (Issue #18)
+                    // Query to get all the existing bikes (at least the first 100)
                     $queryArgs = array( 
                         'post_type'	=> 'bikes',
                         'posts_per_page' => 100,
@@ -145,18 +148,14 @@
                             $tb_bikes_query->the_post();
                             echo '<option value=\"'. get_the_id() .'\">' . get_the_title() . '</option>';
                         }
-
                         echo "</select>";
                         echo "</div>";
-                        echo "<div class=\"load-points-form\">";
+
+                        echo '<div id="load-points-form">';
                         echo "</div>";
+
                         //echo "<td>" . $tbbike_name . "</td>";
-                        
-                        // Versuch mit dem Button:
-                        // YEAH - der ruft das JS ganz unten auf!
-                        echo '<div id="receiving_div_id">';
-                        echo '<button id="button_to_load_data">Get Ajax Content</button>';
-                        echo "</div>";
+                                                
                         echo "</td>";
 
                     }
@@ -273,16 +272,17 @@
 
 
 <script type="text/javascript" >
-jQuery("#button_to_load_data").click(function() {
+//jQuery("#button_to_load_data").click(function() {
+jQuery(".bike-id").change(function() {
 
    var data = {
-      'action'   : 't4_ajaxcall', // the name of your PHP function!
-      'function' : 'show_files',    // a random value we'd like to pass
-      'fileid'   : '7'              // another random value we'd like to pass
+      'action'   : 'tb_ajax_addbike',   // the name of your PHP function!
+      'function' : 'show_files',        // a random value we'd like to pass
+      'fileid'   : '7'                  // another random value we'd like to pass
       };
     
    jQuery.post(blog.ajaxurl, data, function(response) {
-      jQuery("#receiving_div_id").html(response);
+      jQuery("#load-points-form").html(response);
    });
 });
 </script>
