@@ -153,6 +153,9 @@
 
                         echo '<div id="load-points-form">';
                         echo "</div>";
+                        echo '<div id="calculate_points">';
+                        echo "</div>";
+                     
 
                         //echo "<td>" . $tbbike_name . "</td>";
                                                 
@@ -268,21 +271,33 @@
 
 </article>
 
-<?php get_footer();?>
-
 
 <script type="text/javascript" >
-//jQuery("#button_to_load_data").click(function() {
-jQuery(".bike-id").change(function() {
-
-   var data = {
-      'action'   : 'tb_ajax_addbike',   // the name of your PHP function!
-      'function' : 'show_files',        // a random value we'd like to pass
-      'fileid'   : '7'                  // another random value we'd like to pass
-      };
-    
-   jQuery.post(blog.ajaxurl, data, function(response) {
-      jQuery("#load-points-form").html(response);
-   });
-});
+    //jQuery("#button_to_load_data").click(function() {
+    jQuery(".bike-id").change(function() {
+        
+        var data = {
+            'action'   : 'tb_ajax_showaddbike',   // the name of your PHP function!
+            'function' : 'show_files',        // a random value we'd like to pass
+            'fileid'   : '7'                  // another random value we'd like to pass
+        };
+        
+        jQuery.post(blog.ajaxurl, data, function(response) {
+            jQuery("#load-points-form").html(response);
+        });
+    });
+    jQuery(".enterBike").click(function() {
+        
+        var data = {
+            'action'   : 'tb_ajax_enteraddbike',   // the name of your PHP function!
+            'function' : 'show_files',        // a random value we'd like to pass
+            'fileid'   : '7'                  // another random value we'd like to pass
+        };
+        
+        jQuery.post(blog.ajaxurl, data, function(response) {
+            jQuery("#calculate_points").html(response);
+        });
+    });
 </script>
+
+<?php get_footer();?>

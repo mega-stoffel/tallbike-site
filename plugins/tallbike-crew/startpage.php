@@ -178,10 +178,13 @@ function tb_removeme_tour() {
 
 }
 
+// -----------------------------------------------
+// This looks like a funktion to show some information, in case you aren't logged in!
 function must_login_first() {
    echo "You must log in to vote";
    die();
 }
+// -----------------------------------------------
 
 // -----------------------------------
 //       S H O R T C O D E S
@@ -267,26 +270,43 @@ add_action( 'wp_enqueue_scripts', 'tb_blog_scripts' );
 add_action('wp_ajax_show_points_form_ajax', 'show_points_form_ajax');
 
 function show_points_form_ajax() {
-   return 1;
+   //return 1;
    //return "hier!";
    check_ajax_referer('load_points_form', 'security');
    echo "some output!";
    wp_die();
 }
 
-add_action('wp_ajax_tb_ajax_addbike', 'tb_ajax_addbike');
+add_action('wp_ajax_tb_ajax_showaddbike', 'tb_ajax_showaddbike');
 
-function tb_ajax_addbike()
+function tb_ajax_showaddbike()
 {
    echo '<pre>';
+   echo '<form>';
    echo 'Bonuspunkte Fahrman&ouml;ver: <input type=\"number\"><br>';
    echo 'Bonuspunkte Musik: <input type=\"number\"><br>';
    echo 'Bonuspunkte Getr&auml;nke: <input type=\"number\"><br>';
    echo 'Bonuspunkte Verkleidung: <input type=\"number\"><br>';
    echo 'Bonuspunkte <input type=\"text\"> <input type=\"number\"><br>';
    echo 'Bonuspunkte k&ouml;nnen jede ganze Zahl sein.<br>';
+   echo '<div id="calculate_points">';
+   echo "</div>";
    //var_dump($_POST);
-   echo '<button id="enterBike">eintragen</button>';
+   echo '<button id="enterBike" name="enterBike">eintragen</button>';
+   echo '</form>';
+   echo '</pre>';
+   echo '<div id="calculate_points">';
+   echo "</div>";
+   wp_die();
+}
+
+add_action('wp_ajax_tb_ajax_enteraddbike', 'tb_ajax_enteraddbike');
+
+function tb_ajax_enteraddbike()
+{
+   echo '<pre>';
+   echo 'some important text!';
+   echo '<button id="dummyButton">dummy Button</button>';
    echo '</pre>';
    wp_die();
 }
