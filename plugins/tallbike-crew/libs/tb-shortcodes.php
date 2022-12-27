@@ -192,7 +192,7 @@ function tb_all_users(){
     $sql_query_join1 = "SELECT users.ID as UID, users.user_nicename as nicename, users.display_name as displayname, count(BUE.eventid) as counter 
     FROM " .$tableUsers_name . " AS users
     LEFT JOIN " . $tablelinkBUE_name . " as BUE ON users.ID = BUE.userid
-    WHERE users.id NOT IN (1,2)
+    WHERE (users.id NOT IN (1,2))
     GROUP BY 1
     ORDER BY counter DESC";
 
@@ -210,19 +210,24 @@ function tb_all_users(){
 
         foreach ($joined_results as $joined_result)
         {
-            $tb_ourUsers .= "<tr><td>";
-            $tb_displayname = $joined_results[$i]->displayname;
-            if (strlen($tb_displayname)!=0)
-            {
-                $tb_ourUsers .= $tb_displayname;
+            $tb_tour_participations = $joined_results[$i]->counter;
+            if ($tb_tour_participations > 0)
+            {    
+                $tb_ourUsers .= "<tr><td>";
+                $tb_displayname = $joined_results[$i]->displayname;
+                if (strlen($tb_displayname)!=0)
+                {
+                    $tb_ourUsers .= $tb_displayname;
+                }
+                else
+                {
+                    $tb_ourUsers .= $joined_results[$i]->nicename;
+                }
+                $tb_ourUsers .= "</td>";
+                $tb_ourUsers .= "<td>" . $tb_tour_participations ."</td>";
+                $tb_ourUsers .= "</tr>";
             }
-            else
-            {
-                $tb_ourUsers .= $joined_results[$i]->nicename;
-            }
-            $tb_ourUsers .= "</td>";
-            $tb_ourUsers .= "<td>" . $joined_results[$i++]->counter ."</td>";
-            $tb_ourUsers .= "</tr>";
+            $i++;
         }
     }
     else
