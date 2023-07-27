@@ -2,6 +2,23 @@ Random Picture:
 https://wp-time.com/wordpress-random-image/
 
 
+
+
+Examples:
+  wp-env logs --no-watch                    Displays the latest logs for the e2e
+  --environment=tests                       test environment without watching.
+  wp-env run cli wp user list               Runs `wp user list` wp-cli command
+                                            which lists WordPress users.
+  wp-env run cli wp shell                   Open the interactive WordPress shell
+                                            for the development instance.
+  wp-env run tests-cli bash                 Open a bash session in the WordPress
+                                            tests instance.
+
+
+
+
+
+
 Lesson Plan for Custom Post Types!
 https://learn.wordpress.org/lesson-plan/custom-post-types/
 

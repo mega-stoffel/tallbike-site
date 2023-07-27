@@ -26,12 +26,17 @@ get_header();
 
 wp_reset_postdata();
 
+$count_bikes = wp_count_posts( 'bikes' )->publish;
+
+echo '<p>Anzahl unserer Räder: ' . $count_bikes . '<br>';
+echo 'Wobei da auch schon ein paar inzwischen verschrottete Räder in der Liste sind.</p>';
+
 $queryArgs = array( 
     'post_type'	=> 'bikes',
-    'posts_per_page' => 15,
+    'posts_per_page' => 50,
     'orderby'   => 'rand',
-    //'orderby'   => 'ID',
-    //'order'     => 'ASC',
+    'orderby'   => 'ID',
+    'order'     => 'DESC',
 );
 
 //'meta_key'  => 'events_cf_Date',
@@ -40,14 +45,19 @@ $queryArgs = array(
 $tb_bikes_query = new WP_Query( $queryArgs ); 
 
 if ( $tb_bikes_query->have_posts() ) {
-    echo '<ul>';
+    //echo '<ul>';
+    echo '<p>';
     while ( $tb_bikes_query->have_posts() ) {
         $tb_bikes_query->the_post();
         $current_eventID = get_the_ID();
-        echo '<li><img src="' . get_the_post_thumbnail_url(get_the_ID() ,'medium') .'">';
-        echo ' <a href="'. get_the_permalink() .'">' . get_the_title() . '</a></li><br>';
+        //echo '<li>';
+        echo '<a href="'. get_the_permalink() .'">' . get_the_title() . '</a>:<br>';
+        echo '<img src="' . get_the_post_thumbnail_url(get_the_ID() ,'medium') .'">';
+        echo '<br><br>';
+        //echo '</li>';
     }
-    echo '</ul>';
+    //echo '</ul>';
+    echo '</p>';
 } else {
     // no posts found
 }
