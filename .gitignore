@@ -23,6 +23,7 @@ plugins/backup-backup/
 plugins/backup-migration*/
 plugins/koko-analytics/
 plugins/wp-mail-smtp/
+plugins/simple-lightbox/
 
 # ignore specific themes
 themes/twenty*/
