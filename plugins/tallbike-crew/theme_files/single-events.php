@@ -81,7 +81,7 @@
             if ($i<0)
             {
                 echo "<tr>"; //<th>Event</th>
-                echo "<th>Person</th><th>Bike</th><th>Punkte</th></tr>\n";
+                echo "<th>Person</th><th>Punte</th><th>Gesamt</th></tr>\n";
             }
             else
             {
@@ -110,10 +110,20 @@
                     echo ' href="' . $link . '"><img src="/wp-content/plugins/tallbike-crew/pictures/x.png" width="14" title="doch nicht dabei"></a>&nbsp;';
                 }
                 echo $tbfirstname . "</td>";
-                // get bike's name or enter new one
+                // get bike's name (and all other points for this user and this tour) or enter new one
                 //if ($tbbike_id == 0 || $userAlreadyExistshere || $tbadmin)
                 if ($userAlreadyExistshere || $tbadmin)
                 {
+                    //this div container needs to hide by default!
+                    print "<td>\n";
+                    print" <div id=\"PointsContainer\">";
+                    print "This is my DIV element.";
+                    print "<br>";
+                    print "<button onclick=\"enterPoints()\">eintragen</button>";
+                    print "</div>\n";
+                    print "<button onclick=\"showPoints()\">zeigen</button>";
+                    print "</td>\n";
+
                     //$tbbike_name = get_the_title($BUE_results[$i]->bikeid);
 
                     wp_reset_postdata();
@@ -133,6 +143,8 @@
                     if ( $tb_bikes_query->have_posts() )
                     {
                         echo "<td>";
+                        //Todo: hier müssen die ganzen Punkte-Felder angezeigt werden. Könnte wohl mit einem CSS-Hack passieren?
+
                         echo "<div class=\"tb-ajax-bikes\">";
                         echo "<select name=\"bike-id\" class=\"bike-id\">";
                         if ($tbbike_id != 0)
@@ -271,6 +283,17 @@
 
 </article>
 
+<script type="text/javascript" >
+
+function showPoints() {
+  var punkteListe = document.getElementById("PointsContainer");
+  if (punkteListe.style.display === "none") {
+    punkteListe.style.display = "block";
+  } else {
+    punkteListe.style.display = "none";
+  }
+} 
+</script>
 
 <script type="text/javascript" >
     //jQuery("#button_to_load_data").click(function() {
