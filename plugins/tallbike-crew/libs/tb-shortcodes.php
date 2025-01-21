@@ -391,11 +391,14 @@ function tb_random_image()
 function tb_show_event_date() {
 
     // Get the event date
-    $tb_event_date = get_post_meta(get_the_ID(), 'events_cf_Date', true);
+    if (metadata_exists('post', $get_the_ID(), 'events_cf_Date'))
+    {
+        $tb_event_date = get_post_meta(get_the_ID(), 'events_cf_Date', true);
+    }
 
     // Check if event date is found
     if (!$tb_event_date) {
-        return 'Event date not found.';
+        return '';
     }
 
     // Return the event date
