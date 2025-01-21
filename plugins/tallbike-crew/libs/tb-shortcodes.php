@@ -384,4 +384,22 @@ function tb_random_image()
 // I got this basic information from this page:
 // https://www.inkthemes.com/learn-how-to-create-shortcodes-in-wordpress-plugin-with-examples/
 
+# # # # # # # # # # # # # # #
+# Function: Show Event Date
+# # # # # # # # # # # # # # #
+
+function tb_show_event_date() {
+
+    // Get the event date
+    $tb_event_date = get_post_meta(get_the_ID(), 'events_cf_Date', true);
+
+    // Check if event date is found
+    if (!$tb_event_date) {
+        return 'Event date not found.';
+    }
+
+    // Return the event date
+    return esc_html($tb_event_date);
+}
+
 ?>
