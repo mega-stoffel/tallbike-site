@@ -22,7 +22,7 @@ function tallbike_plugin_custom_single_theme_file_include($template)
     return $template;
 }
 
-add_filter('single_template', 'tallbike_plugin_custom_single_theme_file_include');
+#add_filter('single_template', 'tallbike_plugin_custom_single_theme_file_include');
 
 /*
  * Verlinkt die Plugin ARCHIVE Post-Type Seiten
@@ -41,4 +41,4 @@ function tallbike_plugin_custom_archive_theme_file_include($template) {
     }
     return $template;
 }
-add_action('archive_template', 'tallbike_plugin_custom_archive_theme_file_include');
+#add_action('archive_template', 'tallbike_plugin_custom_archive_theme_file_include');
