@@ -24,6 +24,7 @@ plugins/backup-migration*/
 plugins/koko-analytics/
 plugins/wp-mail-smtp/
 plugins/simple-lightbox/
+plugins/activitypub/
 
 # ignore specific themes
 themes/twenty*/
