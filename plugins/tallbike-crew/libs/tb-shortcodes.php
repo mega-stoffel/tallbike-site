@@ -349,9 +349,14 @@ function tb_show_event_date() {
     else
     {
         // Return the event date
-        $tb_event_date = "<div>".$tb_event_date."</div>";
+        //$tb_event_date = "<div>".$tb_event_date."</div>";
+        $tb_event_date = new DateTime($tb_event_date);
+        $tb_event_date_output = $tb_event_date->format('d.m.Y');
+        $tb_event_time_output = $tb_event_date->format('H:i');
+
+        $tb_event_date_print = "<p>".$tb_event_date_output ." um " .$tb_event_time_output ."</p>";
         //return esc_html($tb_event_date);
-        return $tb_event_date;
+        return $tb_event_date_print;
     }
 }
 
