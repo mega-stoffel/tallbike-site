@@ -336,8 +336,8 @@ function tb_random_image()
 
 function tb_show_event_date() {
 
-    // Get the event date
-    if (metadata_exists('post', $get_the_ID(), 'events_cf_Date'))
+    // Get the event date from the post meta
+    if (metadata_exists('post', get_the_ID(), 'events_cf_Date'))
     {
         $tb_event_date = get_post_meta(get_the_ID(), 'events_cf_Date', true);
     }
