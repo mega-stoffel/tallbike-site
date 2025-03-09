@@ -346,9 +346,13 @@ function tb_show_event_date() {
     if (!$tb_event_date) {
         return '';
     }
-
-    // Return the event date
-    return esc_html($tb_event_date);
+    else
+    {
+        // Return the event date
+        $tb_event_date = "<div>".$tb_event_date."</div>";
+        //return esc_html($tb_event_date);
+        return $tb_event_date;
+    }
 }
 
 ?>
