@@ -320,60 +320,6 @@ function tb_random_image()
 
         }
 
-        /*$tb_randImage .= "<br><h3>zuf&auml;lliges Bild 2</h3><br>";
-        $tb_random_query_events = new WP_Query( 
-            array( 
-              'post_type' => 'events', 
-              'posts_per_page' => -1,
-              'orderby' => 'rand',
-              'fields' => 'ids'
-            ) 
-          );
-          $tb_image_query = new WP_Query( 
-            array( 
-              'post_type' => 'attachment', 
-              'post_status' => 'inherit', 
-              'post_mime_type' => 'image', 
-              'posts_per_page' => 1, 
-              'post_parent__in' => $tb_random_query_events->posts, 
-              'order' => 'rand' 
-            ) 
-          );
-          //doesn't seem to get into this if and while. :-/
-          if($tb_image_query->have_posts())
-          {
-            $tb_randImage .= "im if";
-            while( $tb_image_query->have_posts() ) {
-                $tb_randImage .= "im while";
-                $tb_image_query->the_post();
-                $imgurl = wp_get_attachment_url( get_the_ID() );
-                
-                $tb_randImage .= '<p><img src="'.$imgurl.'"></p>';
-            }
-          }
-        */
-
-        /*if ($tb_image_query->have_posts())
-        {
-            while ($tb_image_query->have_posts())
-            {
-                $image = $tb_image_query->the_post();
-                
-                //$current_eventDate = date('d.M.Y', $current_eventtimestamp);
-                //$tb_randImage .=  '<li><h4>'. get_the_title() . '</h4>';
-                //$tb_randImage .=  "Wann? " . $current_eventDate . " um " . $current_eventTime ." Uhr<br>";
-                //$tb_randImage .=  "Wo? " . esc_attr( get_post_meta($current_eventID, 'events_cf_Place', true ) ) . "</li>";
-
-                $image_link = wp_get_attachment_url($image->ID); // random image link.
-                $image_title = $image->post_title; // random image title, you can remove it, not important.
-                $image_caption = $image->post_excerpt; // random image caption, you can remove it, not important.
-                //echo '<p><img src="'.$image_link.'" title="'.$image_title.'" alt="'.$image_caption.'"></p>'; // display random image        
-            }
-        } 
-        else
-        {
-            $tb_randImage = "<p>kein Bild gefunden</p>";
-        }*/
 
         /* Restore original Post Data */
         wp_reset_postdata();
@@ -383,5 +329,26 @@ function tb_random_image()
 
 // I got this basic information from this page:
 // https://www.inkthemes.com/learn-how-to-create-shortcodes-in-wordpress-plugin-with-examples/
+
+# # # # # # # # # # # # # # #
+# Function: Show Event Date
+# # # # # # # # # # # # # # #
+
+function tb_show_event_date() {
+
+    // Get the event date
+    if (metadata_exists('post', $get_the_ID(), 'events_cf_Date'))
+    {
+        $tb_event_date = get_post_meta(get_the_ID(), 'events_cf_Date', true);
+    }
+
+    // Check if event date is found
+    if (!$tb_event_date) {
+        return '';
+    }
+
+    // Return the event date
+    return esc_html($tb_event_date);
+}
 
 ?>
