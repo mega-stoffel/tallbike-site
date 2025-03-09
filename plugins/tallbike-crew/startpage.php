@@ -208,7 +208,7 @@ add_shortcode('tb_kommendeTouren', 'tb_future_events');
 add_shortcode('tb_vergangeneTouren', 'tb_previous_events');
 add_shortcode('tb_all_users', 'tb_all_users');
 add_shortcode('tb_random_image', 'tb_random_image');
-dd_shortcode('tb_show_event_date', 'tb_show_event_date');
+add_shortcode('tb_show_event_date', 'tb_show_event_date');
 
 // -----------------------------------
 //     P A G E T E M P L A T E S
