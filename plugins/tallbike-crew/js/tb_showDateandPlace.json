@@ -1,0 +1,16 @@
+{
+    "apiVersion": 2,
+    "name": "my-custom-block/my-custom-block",
+    "title": "My Custom Block",
+    "category": "common",
+    "icon": "smiley",
+    "editorScript": "file:./tb_showDateandTime.js",
+    "editorStyle": "file:./tb_showDateandTime.css",
+    "attributes": {
+        "content": {
+            "type": "string",
+            "source": "html",
+            "selector": "p"
+        }
+    }
+}
