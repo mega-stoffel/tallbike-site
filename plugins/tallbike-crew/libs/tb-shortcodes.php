@@ -341,6 +341,10 @@ function tb_show_event_date() {
     {
         $tb_event_date = get_post_meta(get_the_ID(), 'events_cf_Date', true);
     }
+    if (metadata_exists('post', get_the_ID(), 'events_cf_Place'))
+    {
+        $tb_event_location = get_post_meta(get_the_ID(), 'events_cf_Place', true);
+    }
 
     // Check if event date is found
     if (!$tb_event_date) {
@@ -353,8 +357,9 @@ function tb_show_event_date() {
         $tb_event_date = new DateTime($tb_event_date);
         $tb_event_date_output = $tb_event_date->format('d.m.Y');
         $tb_event_time_output = $tb_event_date->format('H:i');
-
-        $tb_event_date_print = "<p>".$tb_event_date_output ." um " .$tb_event_time_output ."</p>";
+        
+        $tb_event_date_print = "<p>". $tb_event_date_output ." um " . $tb_event_time_output . " Uhr";
+        $tb_event_date_print .= "<br>Treffpunkt: " . $tb_event_location ."</p>";
         //return esc_html($tb_event_date);
         return $tb_event_date_print;
     }
