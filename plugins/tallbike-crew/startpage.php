@@ -17,14 +17,52 @@ check_admin_referer( "activate-plugin_{$plugin}" );*/
 
 //These two lines define my own theme output:
 define('TALLBIKE_PLUGIN_PATH', plugin_dir_path( __FILE__ ));
+
+#todo: remove this line, when this other job is done.
 require_once TALLBIKE_PLUGIN_PATH.'/libs/register_custom_theme_files.php';
 
 register_activation_hook( __FILE__ , 'tallbike_install' );
 //register_activation_hook( __FILE__ , 'tallbike_install_data' );
 
+// -----------------------------------
+//       C U S T O M P O S T T Y P E S
+// -----------------------------------
 add_action( 'init', 'tbBikes_setup_post_type' );
 add_action( 'init', 'tbEvents_setup_post_type' );
-add_action( 'init', 'tallbike_shortcodes_init' );
+
+#todo: remove this line, when this other job is done.
+#add_action( 'init', 'tallbike_shortcodes_init' );
+
+// -----------------------------------
+//       C U S T O M B L O C K S
+// -----------------------------------
+function my_custom_block_plugin_register_block() {
+   // Register the block script
+   wp_register_script(
+       'my-custom-block',
+       plugins_url( 'js/tb_showDateandTime.js', __FILE__ ),
+       array( 'wp-blocks', 'wp-element', 'wp-editor' )
+   );
+
+   // Register the block styles
+   wp_register_style(
+       'my-custom-block-editor',
+       plugins_url( 'js/tb_showDateandTime.css', __FILE__ ),
+       array( 'wp-edit-blocks' )
+   );
+
+   // Register the block type
+   register_block_type( 'my-custom-block/my-custom-block', array(
+       'editor_script' => 'my-custom-block',
+       'editor_style'  => 'my-custom-block-editor',
+   ) );
+}
+add_action( 'init', 'my_custom_block_plugin_register_block' );
+// -----------------------------------
+//       B L O C K S   E N D
+// -----------------------------------
+
+
 
 //todo: this doesn't seem to work!
 register_deactivation_hook( __FILE__ , 'tallbike_delete' );
@@ -85,6 +123,7 @@ function showBadges(){
 /* here's all installation related stuff, creating new tables, etc */
 include "install/tallbike-installation.php";
 include "libs/add_shortcodes.php";
+include "libs/add_customblock.php";
 
 // -----------------------------------------------------
 // Some working AJAX! Na, well, ähm, so - it's working, yeah. But thats everything. No AJAX at all!
@@ -208,6 +247,7 @@ add_shortcode('tb_kommendeTouren', 'tb_future_events');
 add_shortcode('tb_vergangeneTouren', 'tb_previous_events');
 add_shortcode('tb_all_users', 'tb_all_users');
 add_shortcode('tb_random_image', 'tb_random_image');
+
 
 // -----------------------------------
 //     P A G E T E M P L A T E S
